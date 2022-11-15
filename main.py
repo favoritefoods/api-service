@@ -3,9 +3,11 @@ from httpx import AsyncClient
 
 app = FastAPI()
 
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to the home route"}
+
 
 @app.get("/httpx")
 async def httpx_test():
