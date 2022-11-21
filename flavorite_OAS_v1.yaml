@@ -117,60 +117,6 @@ paths:
           description: Successful operation
         '400':
           description: Invalid review value
-            
-  /reviews/{userId}:
-    get:
-      tags:
-        - reviews
-      summary: Find reviews by user
-      description: Returns all reviews by a single user
-      operationId: getReviewByUser
-      parameters:
-        - name: userId
-          in: path
-          description: ID of user to return user's reviews
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Review'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Review not found
-  /reviews/{restaurantId}:
-    get:
-      tags:
-        - reviews
-      summary: Find reviews by restaurant
-      description: Returns all reviews for a single restaurant
-      operationId: getReviewByRestaurant
-      parameters:
-        - name: restaurantId
-          in: path
-          description: ID of restaurant to return all reviews for a single restaurant
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Review'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Review not found
-
   /reviews/{reviewId}/uploadImage:
     post:
       tags:
@@ -245,6 +191,32 @@ paths:
           description: Invalid query supplied
         '404':
           description: Restaurants not found
+  /restaurants/{restaurantId}/reviews:
+    get:
+      tags:
+        - restaurants
+      summary: Find reviews by restaurant
+      description: Returns all reviews for a single restaurant
+      operationId: getReviewByRestaurant
+      parameters:
+        - name: restaurantId
+          in: path
+          description: ID of restaurant to return all reviews for a single restaurant
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Reviews not found
   /users:
     post:
       tags:
@@ -406,6 +378,31 @@ paths:
           description: Invalid username supplied
         '404':
           description: User not found
+  /users/{username}/reviews:
+    get:
+      tags:
+        - users
+      summary: Get reviews by user name
+      description: Returns all reviews by a single user
+      operationId: getReviewsByUsername
+      parameters:
+        - name: username
+          in: path
+          description: The name of user to return user's reviews
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: Reviews not found
 components:
   schemas:
     Review:
