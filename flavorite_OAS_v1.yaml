@@ -186,11 +186,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Restaurant'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
         '400':
           description: Invalid query supplied
-        '404':
-          description: Restaurants not found
   /restaurants/{restaurantId}/reviews:
     get:
       tags:
@@ -212,11 +212,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Review'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
         '400':
           description: Invalid ID supplied
-        '404':
-          description: Reviews not found
   /users:
     post:
       tags:
@@ -398,11 +398,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Review'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
         '400':
           description: Invalid username supplied
-        '404':
-          description: Reviews not found
 components:
   schemas:
     Review:
