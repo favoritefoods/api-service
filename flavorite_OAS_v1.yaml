@@ -502,8 +502,6 @@ components:
           description: User Status
           format: int32
           example: 1
-      xml:
-        name: user
     Restaurant:
       type: object
       properties:
@@ -549,8 +547,6 @@ components:
           type: string
         message:
           type: string
-      xml:
-        name: '##default'
   requestBodies:
     Review:
       description: Review object that needs to be added to the Reviews
