@@ -288,25 +288,18 @@ paths:
         default:
           description: successful operation
   /users/login:
-    get:
+    post:
       tags:
         - users
       summary: Logs user into the system
       description: ''
       operationId: loginUser
-      parameters:
-        - name: username
-          in: query
-          description: The user name for login
-          required: false
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
-          required: false
-          schema:
-            type: string
+      requestBody:
+        description: Login information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
       responses:
         '200':
           description: successful operation
@@ -563,6 +556,18 @@ components:
           description: User Status
           format: int32
           example: 1
+    LoginUser:
+      type: object
+      properties:
+        username:
+          type: string
+          example: theUser
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
     Restaurant:
       type: object
       properties:
