@@ -34,7 +34,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Review'
+              $ref: '#/components/schemas/UpdateReview'
         required: true
       responses:
         '200':
@@ -64,7 +64,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Review'
+              $ref: '#/components/schemas/CreateReview'
         required: true
       responses:
         '200':
@@ -297,7 +297,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/CreateUser'
       responses:
         default:
           description: successful operation
@@ -318,7 +318,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/CreateUser'
       responses:
         '200':
           description: Successful operation
@@ -422,7 +422,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UpdateUser'
       responses:
         default:
           description: successful operation
@@ -467,6 +467,32 @@ components:
         photoUrl:
           type: string
           example: www.photouploaded.com
+    CreateReview:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+          example: 198772
+        restaurantId:
+          type: integer
+          format: int64
+          example: 19877
+        content:
+          type: string
+          example: Awesome
+        photoUrl:
+          type: string
+          example: www.photouploaded.com
+    UpdateReview:
+      type: object
+      properties:
+        content:
+          type: string
+          example: Awesome
+        photoUrl:
+          type: string
+          example: www.photouploaded.com
     User:
       type: object
       properties:
@@ -474,6 +500,55 @@ components:
           type: integer
           format: int64
           example: 10
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        favoriteFoods:
+          type: array
+          items: 
+            $ref: '#/components/schemas/FavoriteFood'
+        friends:
+          type: array
+          items: 
+            $ref: '#/components/schemas/User'
+        userStatus:
+          type: integer
+          description: User Status
+          format: int32
+          example: 1
+    CreateUser:
+      type: object
+      properties:
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+    UpdateUser:
+      type: object
+      properties:
         username:
           type: string
           example: theUser
