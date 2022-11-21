@@ -15,17 +15,17 @@ externalDocs:
 servers:
   - url: https://localhost:8000/api/v1
 tags:
-  - name: review
-    description: User's post of review on a restaurant that serves one or more of their favorite dishes
-  - name: restaurant
-    description: All restaurants that has reviews from our users
-  - name: user
-    description: Operations about user
+  - name: reviews
+    description: User's post of reviews for restaurants that serve one or more of their favorite dishes
+  - name: restaurants
+    description: All restaurants that have reviews from users
+  - name: users
+    description: Operations about users
 paths:
-  /review:
+  /reviews:
     put:
       tags:
-        - review
+        - reviews
       summary: Update an existing review
       description: Update an existing review by Id
       operationId: updateReview
@@ -55,7 +55,7 @@ paths:
             - read:reviews
     post:
       tags:
-        - review
+        - reviews
       summary: Add a new review about a restaurant
       description: Add a new review about a restaurant
       operationId: addReview
@@ -80,10 +80,10 @@ paths:
             - write:reviews
             - read:reviews
   
-  /review/{reviewId}:
+  /reviews/{reviewId}:
     get:
       tags:
-        - review
+        - reviews
       summary: Find review by ID
       description: Returns a single review
       operationId: getReviewById
@@ -113,7 +113,7 @@ paths:
             - read:reviews
     delete:
       tags:
-        - review
+        - reviews
       summary: Deletes a review
       description: delete a review
       operationId: deleteReview
@@ -139,10 +139,10 @@ paths:
             - write:reviews
             - read:reviews
             
-  /review/{userId}:
+  /reviews/{userId}:
     get:
       tags:
-        - review
+        - reviews
       summary: Find reviews by user
       description: Returns all reviews by a single user
       operationId: getReviewByUser
@@ -170,10 +170,10 @@ paths:
         - flavorite_auth:
             - write:reviews
             - read:reviews
-  /review/{restaurantId}:
+  /reviews/{restaurantId}:
     get:
       tags:
-        - review
+        - reviews
       summary: Find reviews by restaurant
       description: Returns all reviews for a single restaurant
       operationId: getReviewByRestaurant
@@ -202,10 +202,10 @@ paths:
             - write:reviews
             - read:reviews
 
-  /review/{reviewId}/uploadImage:
+  /reviews/{reviewId}/uploadImage:
     post:
       tags:
-        - review
+        - reviews
       summary: uploads an image
       description: ''
       operationId: uploadFile
@@ -240,10 +240,10 @@ paths:
         - flavorite_auth:
             - write:reviews
             - read:reviews
-  /restaurant:
+  /restaurants:
     get:
       tags:
-        - restaurant
+        - restaurants
       summary: Find restaurants in user location given
       description: Returns all restauarants in given location radius
       operationId: getRestaurants
@@ -285,10 +285,10 @@ paths:
         - flavorite_auth:
             - write:restaurants
             - read:restaurants
-  /user:
+  /users:
     post:
       tags:
-        - user
+        - users
       summary: Create user
       description: This can only be done by the logged in user.
       operationId: createUser
@@ -305,10 +305,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /user/createWithList:
+  /users/createWithList:
     post:
       tags:
-        - user
+        - users
       summary: Creates list of users with given input array
       description: Creates list of users with given input array
       operationId: createUsersWithListInput
@@ -328,10 +328,10 @@ paths:
                 $ref: '#/components/schemas/User'
         default:
           description: successful operation
-  /user/login:
+  /users/login:
     get:
       tags:
-        - user
+        - users
       summary: Logs user into the system
       description: ''
       operationId: loginUser
@@ -368,10 +368,10 @@ paths:
                 type: string
         '400':
           description: Invalid username/password supplied
-  /user/logout:
+  /users/logout:
     get:
       tags:
-        - user
+        - users
       summary: Logs out current logged in user session
       description: ''
       operationId: logoutUser
@@ -379,10 +379,10 @@ paths:
       responses:
         default:
           description: successful operation
-  /user/{username}:
+  /users/{username}:
     get:
       tags:
-        - user
+        - users
       summary: Get user by user name
       description: ''
       operationId: getUserByName
@@ -406,7 +406,7 @@ paths:
           description: User not found
     put:
       tags:
-        - user
+        - users
       summary: Update user
       description: This can only be done by the logged in user.
       operationId: updateUser
@@ -428,7 +428,7 @@ paths:
           description: successful operation
     delete:
       tags:
-        - user
+        - users
       summary: Delete user
       description: This can only be done by the logged in user.
       operationId: deleteUser
