@@ -49,10 +49,6 @@ paths:
           description: Review not found
         '405':
           description: Validation exception
-      security:
-        - flavorite_auth:
-            - write:reviews
-            - read:reviews
     post:
       tags:
         - reviews
@@ -75,10 +71,6 @@ paths:
                 $ref: '#/components/schemas/Review'
         '405':
           description: Invalid input
-      security:
-        - flavorite_auth:
-            - write:reviews
-            - read:reviews
   
   /reviews/{reviewId}:
     get:
@@ -106,11 +98,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Review not found
-      security:
-        - api_key: []
-        - flavorite_auth:
-            - write:reviews
-            - read:reviews
     delete:
       tags:
         - reviews
@@ -118,12 +105,6 @@ paths:
       description: delete a review
       operationId: deleteReview
       parameters:
-        - name: api_key
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
         - name: reviewId
           in: path
           description: Review id to delete
@@ -134,10 +115,6 @@ paths:
       responses:
         '400':
           description: Invalid review value
-      security:
-        - flavorite_auth:
-            - write:reviews
-            - read:reviews
             
   /reviews/{userId}:
     get:
@@ -165,11 +142,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Review not found
-      security:
-        - api_key: []
-        - flavorite_auth:
-            - write:reviews
-            - read:reviews
   /reviews/{restaurantId}:
     get:
       tags:
@@ -196,11 +168,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Review not found
-      security:
-        - api_key: []
-        - flavorite_auth:
-            - write:reviews
-            - read:reviews
 
   /reviews/{reviewId}/uploadImage:
     post:
@@ -236,10 +203,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-      security:
-        - flavorite_auth:
-            - write:reviews
-            - read:reviews
   /restaurants:
     get:
       tags:
@@ -280,11 +243,6 @@ paths:
           description: Invalid query supplied
         '404':
           description: Restaurants not found
-      security:
-        - api_key: []
-        - flavorite_auth:
-            - write:restaurants
-            - read:restaurants
   /users:
     post:
       tags:
@@ -637,16 +595,3 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/User'
-  securitySchemes:
-    flavorite_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            write:reviews: modify your reviews 
-            read:reviews: read your reviews or reviews made by your friends
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
