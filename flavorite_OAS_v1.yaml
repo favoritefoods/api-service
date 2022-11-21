@@ -113,6 +113,8 @@ paths:
             type: integer
             format: int64
       responses:
+        '204':
+          description: Successful operation
         '400':
           description: Invalid review value
             
@@ -398,6 +400,8 @@ paths:
           schema:
             type: string
       responses:
+        '204':
+          description: Successful operation
         '400':
           description: Invalid username supplied
         '404':
