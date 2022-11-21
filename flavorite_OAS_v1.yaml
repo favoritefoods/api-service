@@ -3,7 +3,6 @@ info:
   title: Flavorite - OpenAPI 3.0
   description: >-
     This is a Flavorite Server based on the OpenAPI 3.0 specification. 
-  termsOfService: http://swagger.io/terms/
   contact:
     email: apiteam@swagger.io
   license:
@@ -36,21 +35,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Review'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Review'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Review'
         required: true
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Review'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/Review'
         '400':
@@ -75,21 +65,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Review'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Review'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Review'
         required: true
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Review'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/Review'
         '405':
@@ -119,9 +100,6 @@ paths:
           description: successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Review'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/Review'
         '400':
@@ -183,9 +161,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Review'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Review'
         '400':
           description: Invalid ID supplied
         '404':
@@ -215,9 +190,6 @@ paths:
           description: successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Review'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/Review'
         '400':
@@ -304,9 +276,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Restaurant'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Restaurant'
         '400':
           description: Invalid query supplied
         '404':
@@ -329,20 +298,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
       responses:
         default:
           description: successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/User'
   /user/createWithList:
@@ -364,9 +324,6 @@ paths:
           description: Successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/User'
         default:
@@ -406,9 +363,6 @@ paths:
                 type: string
                 format: date-time
           content:
-            application/xml:
-              schema:
-                type: string
             application/json:
               schema:
                 type: string
@@ -446,9 +400,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
         '400':
           description: Invalid username supplied
         '404':
@@ -470,12 +421,6 @@ paths:
         description: Update an existent user in the store
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/User'
       responses:
@@ -611,9 +556,6 @@ components:
       description: Review object that needs to be added to the Reviews
       content:
         application/json:
-          schema:
-            $ref: '#/components/schemas/Review'
-        application/xml:
           schema:
             $ref: '#/components/schemas/Review'
     UserArray:
