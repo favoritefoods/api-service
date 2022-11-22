@@ -21,12 +21,7 @@ paths:
       description: Add a new review about a restaurant
       operationId: addReview
       requestBody:
-        description: Create a new review about a restaurant
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateReview'
-        required: true
+        $ref: '#/components/requestBodies/CreateReview'
       responses:
         '200':
           description: Successful operation
@@ -70,12 +65,7 @@ paths:
       description: Update an existing review by Id
       operationId: updateReviewbyId
       requestBody:
-        description: Update an existent review on a restaurant
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateReview'
-        required: true
+        $ref: '#/components/requestBodies/UpdateReview'
       responses:
         '200':
           description: Successful operation
@@ -243,11 +233,7 @@ paths:
       description: This can only be done by the logged in user.
       operationId: createUser
       requestBody:
-        description: Created user object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateUser'
+        $ref: '#/components/requestBodies/CreateUser'
       responses:
         default:
           description: successful operation
@@ -263,11 +249,7 @@ paths:
       description: ''
       operationId: loginUser
       requestBody:
-        description: Login information
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginUser'
+        $ref: '#/components/requestBodies/LoginUser'
       responses:
         '200':
           description: successful operation
@@ -327,11 +309,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description: Update an existent user in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateUser'
+        $ref: '#/components/requestBodies/UpdateUser'
       responses:
         default:
           description: successful operation
@@ -585,17 +563,35 @@ components:
         message:
           type: string
   requestBodies:
-    Review:
-      description: Review object that needs to be added to the Reviews
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Review'
-    UserArray:
-      description: List of user object
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/User'
+    CreateReview:
+      description: Create a new review about a restaurant
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReview'
+        required: true
+    UpdateReview:
+      description: Update an existent review on a restaurant
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateReview'
+        required: true
+    CreateUser:
+      description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+    LoginUser:
+      description: Login information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
+    UpdateUser:
+      description: Update an existent user in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUser'
