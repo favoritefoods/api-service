@@ -3,6 +3,7 @@ info:
   title: Flavorite - OpenAPI 3.0
   description: >-
     This is a Flavorite Server based on the OpenAPI 3.0 specification. 
+  version: 1.0
 servers:
   - url: https://localhost:8000/api/v1
 tags:
@@ -64,6 +65,14 @@ paths:
       summary: Update an existing review
       description: Update an existing review by Id
       operationId: updateReviewbyId
+      parameters:
+        - name: reviewId
+          in: path
+          description: ID of review to return
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         $ref: '#/components/requestBodies/UpdateReview'
       responses:
@@ -565,33 +574,36 @@ components:
   requestBodies:
     CreateReview:
       description: Create a new review about a restaurant
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateReview'
-        required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateReview'
+      required: true
     UpdateReview:
       description: Update an existent review on a restaurant
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateReview'
-        required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateReview'
+      required: true
     CreateUser:
       description: Created user object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateUser'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateUser'
+      required: true
     LoginUser:
       description: Login information
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginUser'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginUser'
+      required: true
     UpdateUser:
       description: Update an existent user in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateUser'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateUser'
+      required: true
