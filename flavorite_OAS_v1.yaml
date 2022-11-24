@@ -358,6 +358,11 @@ paths:
 components:
   schemas:
     Review:
+      required:
+        - id
+        - userId
+        - restaurantId
+        - rating
       type: object
       properties:
         id:
@@ -383,6 +388,8 @@ components:
           type: string
           example: www.photouploaded.com
     ListReviews:
+      required:
+        - reviews
       type: object
       properties:
         reviews: 
@@ -431,6 +438,15 @@ components:
           type: string
           example: www.photouploaded.com
     User:
+      required:
+        - id
+        - username
+        - firstName
+        - lastName
+        - email
+        - password
+        - favoriteFoods
+        - friends
       type: object
       properties:
         id:
@@ -523,6 +539,12 @@ components:
           type: string
           example: '12345'
     Restaurant:
+      required:
+        - id
+        - name
+        - longitude
+        - latitude
+        - address
       type: object
       properties:
         id:
@@ -544,6 +566,8 @@ components:
           type: string
           example: '120 Detroit Ave, CA 94520'
     ListRestaurants:
+      required:
+        - restaurants
       type: object
       properties:
         restaurants: 
@@ -555,7 +579,9 @@ components:
         # total: integer
     FavoriteFood:
       required:
+        - id
         - name
+        - reviews
       type: object
       properties:
         id:
