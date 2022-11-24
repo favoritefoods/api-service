@@ -16,18 +16,18 @@ class Review(BaseModel):
 
     Review - a model defined in OpenAPI
 
-        id: The id of this Review [Optional].
-        user_id: The user_id of this Review [Optional].
-        restaurant_id: The restaurant_id of this Review [Optional].
-        rating: The rating of this Review [Optional].
+        id: The id of this Review.
+        user_id: The user_id of this Review.
+        restaurant_id: The restaurant_id of this Review.
+        rating: The rating of this Review.
         content: The content of this Review [Optional].
         photo_url: The photo_url of this Review [Optional].
     """
 
-    id: Optional[int] = Field(alias="id", default=None)
-    user_id: Optional[int] = Field(alias="userId", default=None)
-    restaurant_id: Optional[int] = Field(alias="restaurantId", default=None)
-    rating: Optional[int] = Field(alias="rating", default=None)
+    id: int = Field(alias="id")
+    user_id: int = Field(alias="userId")
+    restaurant_id: int = Field(alias="restaurantId")
+    rating: int = Field(alias="rating")
     content: Optional[str] = Field(alias="content", default=None)
     photo_url: Optional[str] = Field(alias="photoUrl", default=None)
 

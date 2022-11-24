@@ -3,8 +3,8 @@
 from fastapi.testclient import TestClient
 
 
-from openapi_server.models.restaurant import Restaurant  # noqa: F401
-from openapi_server.models.review import Review  # noqa: F401
+from openapi_server.models.list_restaurants import ListRestaurants  # noqa: F401
+from openapi_server.models.list_reviews import ListReviews  # noqa: F401
 
 
 def test_get_restaurants(client: TestClient):

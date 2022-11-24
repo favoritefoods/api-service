@@ -17,23 +17,23 @@ class User(BaseModel):
 
     User - a model defined in OpenAPI
 
-        id: The id of this User [Optional].
-        username: The username of this User [Optional].
-        first_name: The first_name of this User [Optional].
-        last_name: The last_name of this User [Optional].
-        email: The email of this User [Optional].
-        password: The password of this User [Optional].
-        favorite_foods: The favorite_foods of this User [Optional].
-        friends: The friends of this User [Optional].
+        id: The id of this User.
+        username: The username of this User.
+        first_name: The first_name of this User.
+        last_name: The last_name of this User.
+        email: The email of this User.
+        password: The password of this User.
+        favorite_foods: The favorite_foods of this User.
+        friends: The friends of this User.
     """
 
-    id: Optional[int] = Field(alias="id", default=None)
-    username: Optional[str] = Field(alias="username", default=None)
-    first_name: Optional[str] = Field(alias="firstName", default=None)
-    last_name: Optional[str] = Field(alias="lastName", default=None)
-    email: Optional[str] = Field(alias="email", default=None)
-    password: Optional[str] = Field(alias="password", default=None)
-    favorite_foods: Optional[List[FavoriteFood]] = Field(alias="favoriteFoods", default=None)
-    friends: Optional[List[User]] = Field(alias="friends", default=None)
+    id: int = Field(alias="id")
+    username: str = Field(alias="username")
+    first_name: str = Field(alias="firstName")
+    last_name: str = Field(alias="lastName")
+    email: str = Field(alias="email")
+    password: str = Field(alias="password")
+    favorite_foods: List[FavoriteFood] = Field(alias="favoriteFoods")
+    friends: List[User] = Field(alias="friends")
 
 User.update_forward_refs()

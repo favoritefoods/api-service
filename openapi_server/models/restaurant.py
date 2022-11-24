@@ -16,17 +16,17 @@ class Restaurant(BaseModel):
 
     Restaurant - a model defined in OpenAPI
 
-        id: The id of this Restaurant [Optional].
-        name: The name of this Restaurant [Optional].
-        longitude: The longitude of this Restaurant [Optional].
-        latitude: The latitude of this Restaurant [Optional].
-        address: The address of this Restaurant [Optional].
+        id: The id of this Restaurant.
+        name: The name of this Restaurant.
+        longitude: The longitude of this Restaurant.
+        latitude: The latitude of this Restaurant.
+        address: The address of this Restaurant.
     """
 
-    id: Optional[int] = Field(alias="id", default=None)
-    name: Optional[str] = Field(alias="name", default=None)
-    longitude: Optional[float] = Field(alias="longitude", default=None)
-    latitude: Optional[float] = Field(alias="latitude", default=None)
-    address: Optional[str] = Field(alias="address", default=None)
+    id: int = Field(alias="id")
+    name: str = Field(alias="name")
+    longitude: float = Field(alias="longitude")
+    latitude: float = Field(alias="latitude")
+    address: str = Field(alias="address")
 
 Restaurant.update_forward_refs()

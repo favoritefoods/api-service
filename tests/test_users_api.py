@@ -4,8 +4,8 @@ from fastapi.testclient import TestClient
 
 
 from openapi_server.models.create_user import CreateUser  # noqa: F401
+from openapi_server.models.list_reviews import ListReviews  # noqa: F401
 from openapi_server.models.login_user import LoginUser  # noqa: F401
-from openapi_server.models.review import Review  # noqa: F401
 from openapi_server.models.update_user import UpdateUser  # noqa: F401
 from openapi_server.models.user import User  # noqa: F401
 

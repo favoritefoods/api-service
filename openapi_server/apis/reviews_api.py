@@ -56,7 +56,6 @@ async def add_review(
 )
 async def delete_image(
     reviewId: int = Path(None, description="ID of review to update"),
-    additional_metadata: str = Query(None, description="Additional Metadata"),
 ) -> None:
     """"""
     ...

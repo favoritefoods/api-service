@@ -17,8 +17,8 @@ from fastapi import (  # noqa: F401
 )
 
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
-from openapi_server.models.restaurant import Restaurant
-from openapi_server.models.review import Review
+from openapi_server.models.list_restaurants import ListRestaurants
+from openapi_server.models.list_reviews import ListReviews
 
 
 router = APIRouter()
@@ -27,7 +27,7 @@ router = APIRouter()
 @router.get(
     "/restaurants",
     responses={
-        200: {"model": List[Restaurant], "description": "successful operation"},
+        200: {"model": ListRestaurants, "description": "successful operation"},
         400: {"description": "Invalid query supplied"},
     },
     tags=["restaurants"],
@@ -38,7 +38,7 @@ async def get_restaurants(
     longitude: float = Query(None, description="longitude of center"),
     latitude: float = Query(None, description="latitude of center"),
     radius: int = Query(None, description="radius"),
-) -> List[Restaurant]:
+) -> ListRestaurants:
     """Returns all restauarants in given location radius"""
     ...
 
@@ -46,7 +46,7 @@ async def get_restaurants(
 @router.get(
     "/restaurants/{restaurantId}/reviews",
     responses={
-        200: {"model": List[Review], "description": "Successful operation"},
+        200: {"model": ListReviews, "description": "Successful operation"},
         400: {"description": "Invalid ID supplied"},
     },
     tags=["restaurants"],
@@ -55,6 +55,6 @@ async def get_restaurants(
 )
 async def get_review_by_restaurant(
     restaurantId: int = Path(None, description="ID of restaurant to return all reviews for a single restaurant"),
-) -> List[Review]:
+) -> ListReviews:
     """Returns all reviews for a single restaurant"""
     ...

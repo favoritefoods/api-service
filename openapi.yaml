@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   description: 'This is a Flavorite Server based on the OpenAPI 3.0 specification. '
   title: Flavorite - OpenAPI 3.0
-  version: "1.0"
+  version: 1.0.0
 servers:
 - url: https://localhost:8000/api/v1
 tags:
@@ -126,14 +126,6 @@ paths:
           format: int64
           type: integer
         style: simple
-      - description: Additional Metadata
-        explode: true
-        in: query
-        name: additionalMetadata
-        required: false
-        schema:
-          type: string
-        style: form
       responses:
         "204":
           description: Successful operation
@@ -218,9 +210,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Restaurant'
-                type: array
+                $ref: '#/components/schemas/ListRestaurants'
           description: successful operation
         "400":
           description: Invalid query supplied
@@ -246,9 +236,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Review'
-                type: array
+                $ref: '#/components/schemas/ListReviews'
           description: Successful operation
         "400":
           description: Invalid ID supplied
@@ -262,7 +250,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreateUser'
       responses:
-        default:
+        "200":
           content:
             application/json:
               schema:
@@ -387,9 +375,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Review'
-                type: array
+                $ref: '#/components/schemas/ListReviews'
           description: successful operation
         "400":
           description: Invalid username supplied
@@ -471,7 +457,37 @@ components:
           example: www.photouploaded.com
           title: photoUrl
           type: string
+      required:
+      - id
+      - rating
+      - restaurantId
+      - userId
       title: Review
+      type: object
+    ListReviews:
+      example:
+        reviews:
+        - photoUrl: www.photouploaded.com
+          rating: 5
+          id: 10
+          restaurantId: 19877
+          userId: 198772
+          content: Awesome
+        - photoUrl: www.photouploaded.com
+          rating: 5
+          id: 10
+          restaurantId: 19877
+          userId: 198772
+          content: Awesome
+      properties:
+        reviews:
+          items:
+            $ref: '#/components/schemas/Review'
+          title: reviews
+          type: array
+      required:
+      - reviews
+      title: ListReviews
       type: object
     CreateReview:
       example:
@@ -609,6 +625,15 @@ components:
             $ref: '#/components/schemas/User'
           title: friends
           type: array
+      required:
+      - email
+      - favoriteFoods
+      - firstName
+      - friends
+      - id
+      - lastName
+      - password
+      - username
       title: User
       type: object
     CreateUser:
@@ -848,7 +873,36 @@ components:
           example: "120 Detroit Ave, CA 94520"
           title: address
           type: string
+      required:
+      - address
+      - id
+      - latitude
+      - longitude
+      - name
       title: Restaurant
+      type: object
+    ListRestaurants:
+      example:
+        restaurants:
+        - address: "120 Detroit Ave, CA 94520"
+          latitude: 49.2
+          name: Outback
+          id: 10
+          longitude: 32.6
+        - address: "120 Detroit Ave, CA 94520"
+          latitude: 49.2
+          name: Outback
+          id: 10
+          longitude: 32.6
+      properties:
+        restaurants:
+          items:
+            $ref: '#/components/schemas/Restaurant'
+          title: restaurants
+          type: array
+      required:
+      - restaurants
+      title: ListRestaurants
       type: object
     FavoriteFood:
       example:
@@ -883,7 +937,9 @@ components:
           title: reviews
           type: array
       required:
+      - id
       - name
+      - reviews
       title: FavoriteFood
       type: object
     ApiResponse:

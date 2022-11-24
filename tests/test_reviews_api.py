@@ -34,14 +34,13 @@ def test_delete_image(client: TestClient):
 
     deletes an image
     """
-    params = [("additional_metadata", 'additional_metadata_example')]
+
     headers = {
     }
     response = client.request(
         "DELETE",
         "/reviews/{reviewId}/image".format(reviewId=56),
         headers=headers,
-        params=params,
     )
 
     # uncomment below to assert the status code of the HTTP response

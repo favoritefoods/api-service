@@ -18,8 +18,8 @@ from fastapi import (  # noqa: F401
 
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.create_user import CreateUser
+from openapi_server.models.list_reviews import ListReviews
 from openapi_server.models.login_user import LoginUser
-from openapi_server.models.review import Review
 from openapi_server.models.update_user import UpdateUser
 from openapi_server.models.user import User
 
@@ -64,7 +64,7 @@ async def delete_user(
 @router.get(
     "/users/{username}/reviews",
     responses={
-        200: {"model": List[Review], "description": "successful operation"},
+        200: {"model": ListReviews, "description": "successful operation"},
         400: {"description": "Invalid username supplied"},
     },
     tags=["users"],
@@ -73,7 +73,7 @@ async def delete_user(
 )
 async def get_reviews_by_username(
     username: str = Path(None, description="The name of user to return user&#39;s reviews"),
-) -> List[Review]:
+) -> ListReviews:
     """Returns all reviews by a single user"""
     ...
 
