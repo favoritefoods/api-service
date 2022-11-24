@@ -3,7 +3,7 @@ info:
   title: Flavorite - OpenAPI 3.0
   description: >-
     This is a Flavorite Server based on the OpenAPI 3.0 specification. 
-  version: 1.0
+  version: 1.0.0
 servers:
   - url: https://localhost:8000/api/v1
 tags:
@@ -155,12 +155,6 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: additionalMetadata
-          in: query
-          description: Additional Metadata
-          required: false
-          schema:
-            type: string
       responses:
         '204':
           description: Successful operation
@@ -203,9 +197,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Restaurant'
+                $ref: '#/components/schemas/ListRestaurants'
         '400':
           description: Invalid query supplied
   /restaurants/{restaurantId}/reviews:
@@ -229,9 +221,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Review'
+                $ref: '#/components/schemas/ListReviews'
         '400':
           description: Invalid ID supplied
   /users:
@@ -244,7 +234,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreateUser'
       responses:
-        default:
+        '200':
           description: successful operation
           content:
             application/json:
@@ -362,14 +352,17 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Review'
+                $ref: '#/components/schemas/ListReviews'
         '400':
           description: Invalid username supplied
 components:
   schemas:
     Review:
+      required:
+        - id
+        - userId
+        - restaurantId
+        - rating
       type: object
       properties:
         id:
@@ -394,6 +387,18 @@ components:
         photoUrl:
           type: string
           example: www.photouploaded.com
+    ListReviews:
+      required:
+        - reviews
+      type: object
+      properties:
+        reviews: 
+          type: array
+          items: 
+            $ref: '#/components/schemas/Review'
+        # nextUri: string
+        # prevUri: string
+        # total: integer
     CreateReview:
       required:
         - userId
@@ -433,6 +438,15 @@ components:
           type: string
           example: www.photouploaded.com
     User:
+      required:
+        - id
+        - username
+        - firstName
+        - lastName
+        - email
+        - password
+        - favoriteFoods
+        - friends
       type: object
       properties:
         id:
@@ -525,6 +539,12 @@ components:
           type: string
           example: '12345'
     Restaurant:
+      required:
+        - id
+        - name
+        - longitude
+        - latitude
+        - address
       type: object
       properties:
         id:
@@ -545,9 +565,23 @@ components:
         address:
           type: string
           example: '120 Detroit Ave, CA 94520'
+    ListRestaurants:
+      required:
+        - restaurants
+      type: object
+      properties:
+        restaurants: 
+          type: array
+          items: 
+            $ref: '#/components/schemas/Restaurant'
+        # nextUri: string
+        # prevUri: string
+        # total: integer
     FavoriteFood:
       required:
+        - id
         - name
+        - reviews
       type: object
       properties:
         id:
