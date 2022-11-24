@@ -155,12 +155,6 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: additionalMetadata
-          in: query
-          description: Additional Metadata
-          required: false
-          schema:
-            type: string
       responses:
         '204':
           description: Successful operation
@@ -244,7 +238,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreateUser'
       responses:
-        default:
+        '200':
           description: successful operation
           content:
             application/json:
