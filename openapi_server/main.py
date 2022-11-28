@@ -10,7 +10,7 @@
 """
 
 
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter, Request
 
 from openapi_server.apis.restaurants_api import router as RestaurantsApiRouter
 from openapi_server.apis.reviews_api import router as ReviewsApiRouter
@@ -21,7 +21,12 @@ app = FastAPI(
     description="This is a Flavorite Server based on the OpenAPI 3.0 specification. ",
     version="1.0.0",
 )
+top_router = APIRouter(prefix="/api")
+sub_router = APIRouter(prefix="/v1")
 
-app.include_router(RestaurantsApiRouter)
-app.include_router(ReviewsApiRouter)
-app.include_router(UsersApiRouter)
+sub_router.include_router(RestaurantsApiRouter)
+sub_router.include_router(ReviewsApiRouter)
+sub_router.include_router(UsersApiRouter)
+
+top_router.include_router(sub_router)
+app.include_router(top_router)
