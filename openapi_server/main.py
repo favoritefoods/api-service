@@ -10,7 +10,7 @@
 """
 
 
-from fastapi import FastAPI, APIRouter, Request
+from fastapi import FastAPI, APIRouter
 
 from openapi_server.apis.restaurants_api import router as RestaurantsApiRouter
 from openapi_server.apis.reviews_api import router as ReviewsApiRouter
