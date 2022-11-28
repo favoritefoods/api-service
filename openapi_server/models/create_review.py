@@ -29,4 +29,5 @@ class CreateReview(BaseModel):
     content: Optional[str] = Field(alias="content", default=None)
     photo_url: Optional[str] = Field(alias="photoUrl", default=None)
 
+
 CreateReview.update_forward_refs()

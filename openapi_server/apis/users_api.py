@@ -72,7 +72,9 @@ async def delete_user(
     response_model_by_alias=True,
 )
 async def get_reviews_by_username(
-    username: str = Path(None, description="The name of user to return user&#39;s reviews"),
+    username: str = Path(
+        None, description="The name of user to return user&#39;s reviews"
+    ),
 ) -> ListReviews:
     """Returns all reviews by a single user"""
     ...
@@ -90,7 +92,9 @@ async def get_reviews_by_username(
     response_model_by_alias=True,
 )
 async def get_user_by_name(
-    username: str = Path(None, description="The name that needs to be fetched. Use user1 for testing. "),
+    username: str = Path(
+        None, description="The name that needs to be fetched. Use user1 for testing. "
+    ),
 ) -> User:
     """"""
     ...
@@ -122,8 +126,7 @@ async def login_user(
     summary="Logs out current logged in user session",
     response_model_by_alias=True,
 )
-async def logout_user(
-) -> None:
+async def logout_user() -> None:
     """"""
     ...
 
@@ -139,7 +142,9 @@ async def logout_user(
 )
 async def update_user(
     username: str = Path(None, description="Name of user that need to be updated"),
-    update_user: UpdateUser = Body(None, description="Update an existent user in the store"),
+    update_user: UpdateUser = Body(
+        None, description="Update an existent user in the store"
+    ),
 ) -> None:
     """This can only be done by the logged in user."""
     ...

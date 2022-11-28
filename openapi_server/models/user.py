@@ -36,4 +36,5 @@ class User(BaseModel):
     favorite_foods: List[FavoriteFood] = Field(alias="favoriteFoods")
     friends: List[User] = Field(alias="friends")
 
+
 User.update_forward_refs()

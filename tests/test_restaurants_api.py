@@ -12,9 +12,8 @@ def test_get_restaurants(client: TestClient):
 
     Find restaurants in user location given
     """
-    params = [("longitude", 3.4),     ("latitude", 3.4),     ("radius", 56)]
-    headers = {
-    }
+    params = [("longitude", 3.4), ("latitude", 3.4), ("radius", 56)]
+    headers = {}
     response = client.request(
         "GET",
         "/restaurants",
@@ -23,7 +22,7 @@ def test_get_restaurants(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_get_review_by_restaurant(client: TestClient):
@@ -32,8 +31,7 @@ def test_get_review_by_restaurant(client: TestClient):
     Find reviews by restaurant
     """
 
-    headers = {
-    }
+    headers = {}
     response = client.request(
         "GET",
         "/restaurants/{restaurantId}/reviews".format(restaurantId=56),
@@ -41,5 +39,4 @@ def test_get_review_by_restaurant(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
-
+    # assert response.status_code == 200

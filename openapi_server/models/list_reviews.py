@@ -22,4 +22,5 @@ class ListReviews(BaseModel):
 
     reviews: List[Review] = Field(alias="reviews")
 
+
 ListReviews.update_forward_refs()

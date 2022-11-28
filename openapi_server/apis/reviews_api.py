@@ -37,7 +37,9 @@ router = APIRouter()
     response_model_by_alias=True,
 )
 async def add_review(
-    create_review: CreateReview = Body(None, description="Create a new review about a restaurant"),
+    create_review: CreateReview = Body(
+        None, description="Create a new review about a restaurant"
+    ),
 ) -> Review:
     """Add a new review about a restaurant"""
     ...
@@ -110,7 +112,9 @@ async def get_review_by_id(
 )
 async def update_reviewby_id(
     reviewId: int = Path(None, description="ID of review to return"),
-    update_review: UpdateReview = Body(None, description="Update an existent review on a restaurant"),
+    update_review: UpdateReview = Body(
+        None, description="Update an existent review on a restaurant"
+    ),
 ) -> Review:
     """Update an existing review by Id"""
     ...

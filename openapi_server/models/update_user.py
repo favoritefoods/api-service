@@ -32,7 +32,10 @@ class UpdateUser(BaseModel):
     last_name: Optional[str] = Field(alias="lastName", default=None)
     email: Optional[str] = Field(alias="email", default=None)
     password: Optional[str] = Field(alias="password", default=None)
-    favorite_foods: Optional[List[FavoriteFood]] = Field(alias="favoriteFoods", default=None)
+    favorite_foods: Optional[List[FavoriteFood]] = Field(
+        alias="favoriteFoods", default=None
+    )
     friends: Optional[List[User]] = Field(alias="friends", default=None)
+
 
 UpdateUser.update_forward_refs()

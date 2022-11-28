@@ -15,10 +15,15 @@ def test_create_user(client: TestClient):
 
     Create user
     """
-    create_user = {"first_name":"John","last_name":"James","password":"12345","email":"john@email.com","username":"theUser"}
-
-    headers = {
+    create_user = {
+        "first_name": "John",
+        "last_name": "James",
+        "password": "12345",
+        "email": "john@email.com",
+        "username": "theUser",
     }
+
+    headers = {}
     response = client.request(
         "POST",
         "/users",
@@ -27,7 +32,7 @@ def test_create_user(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_delete_user(client: TestClient):
@@ -36,16 +41,15 @@ def test_delete_user(client: TestClient):
     Delete user
     """
 
-    headers = {
-    }
+    headers = {}
     response = client.request(
         "DELETE",
-        "/users/{username}".format(username='username_example'),
+        "/users/{username}".format(username="username_example"),
         headers=headers,
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_get_reviews_by_username(client: TestClient):
@@ -54,16 +58,15 @@ def test_get_reviews_by_username(client: TestClient):
     Get reviews by user name
     """
 
-    headers = {
-    }
+    headers = {}
     response = client.request(
         "GET",
-        "/users/{username}/reviews".format(username='username_example'),
+        "/users/{username}/reviews".format(username="username_example"),
         headers=headers,
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_get_user_by_name(client: TestClient):
@@ -72,16 +75,15 @@ def test_get_user_by_name(client: TestClient):
     Get user by user name
     """
 
-    headers = {
-    }
+    headers = {}
     response = client.request(
         "GET",
-        "/users/{username}".format(username='username_example'),
+        "/users/{username}".format(username="username_example"),
         headers=headers,
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_login_user(client: TestClient):
@@ -89,10 +91,9 @@ def test_login_user(client: TestClient):
 
     Logs user into the system
     """
-    login_user = {"password":"12345","username_or_email":"theUser/john@email.com"}
+    login_user = {"password": "12345", "username_or_email": "theUser/john@email.com"}
 
-    headers = {
-    }
+    headers = {}
     response = client.request(
         "POST",
         "/users/login",
@@ -101,7 +102,7 @@ def test_login_user(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_logout_user(client: TestClient):
@@ -110,8 +111,7 @@ def test_logout_user(client: TestClient):
     Logs out current logged in user session
     """
 
-    headers = {
-    }
+    headers = {}
     response = client.request(
         "POST",
         "/users/logout",
@@ -119,7 +119,7 @@ def test_logout_user(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_update_user(client: TestClient):
@@ -127,17 +127,179 @@ def test_update_user(client: TestClient):
 
     Update user
     """
-    update_user = {"first_name":"John","last_name":"James","password":"12345","email":"john@email.com","friends":[{"first_name":"John","last_name":"James","password":"12345","id":10,"email":"john@email.com","friends":[None,None],"username":"theUser","favorite_foods":[{"reviews":[{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"},{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"}],"name":"sushi","id":10},{"reviews":[{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"},{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"}],"name":"sushi","id":10}]},{"first_name":"John","last_name":"James","password":"12345","id":10,"email":"john@email.com","friends":[None,None],"username":"theUser","favorite_foods":[{"reviews":[{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"},{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"}],"name":"sushi","id":10},{"reviews":[{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"},{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"}],"name":"sushi","id":10}]}],"username":"theUser","favorite_foods":[{"reviews":[{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"},{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"}],"name":"sushi","id":10},{"reviews":[{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"},{"photo_url":"www.photouploaded.com","rating":5,"id":10,"restaurant_id":19877,"user_id":198772,"content":"Awesome"}],"name":"sushi","id":10}]}
-
-    headers = {
+    update_user = {
+        "first_name": "John",
+        "last_name": "James",
+        "password": "12345",
+        "email": "john@email.com",
+        "friends": [
+            {
+                "first_name": "John",
+                "last_name": "James",
+                "password": "12345",
+                "id": 10,
+                "email": "john@email.com",
+                "friends": [None, None],
+                "username": "theUser",
+                "favorite_foods": [
+                    {
+                        "reviews": [
+                            {
+                                "photo_url": "www.photouploaded.com",
+                                "rating": 5,
+                                "id": 10,
+                                "restaurant_id": 19877,
+                                "user_id": 198772,
+                                "content": "Awesome",
+                            },
+                            {
+                                "photo_url": "www.photouploaded.com",
+                                "rating": 5,
+                                "id": 10,
+                                "restaurant_id": 19877,
+                                "user_id": 198772,
+                                "content": "Awesome",
+                            },
+                        ],
+                        "name": "sushi",
+                        "id": 10,
+                    },
+                    {
+                        "reviews": [
+                            {
+                                "photo_url": "www.photouploaded.com",
+                                "rating": 5,
+                                "id": 10,
+                                "restaurant_id": 19877,
+                                "user_id": 198772,
+                                "content": "Awesome",
+                            },
+                            {
+                                "photo_url": "www.photouploaded.com",
+                                "rating": 5,
+                                "id": 10,
+                                "restaurant_id": 19877,
+                                "user_id": 198772,
+                                "content": "Awesome",
+                            },
+                        ],
+                        "name": "sushi",
+                        "id": 10,
+                    },
+                ],
+            },
+            {
+                "first_name": "John",
+                "last_name": "James",
+                "password": "12345",
+                "id": 10,
+                "email": "john@email.com",
+                "friends": [None, None],
+                "username": "theUser",
+                "favorite_foods": [
+                    {
+                        "reviews": [
+                            {
+                                "photo_url": "www.photouploaded.com",
+                                "rating": 5,
+                                "id": 10,
+                                "restaurant_id": 19877,
+                                "user_id": 198772,
+                                "content": "Awesome",
+                            },
+                            {
+                                "photo_url": "www.photouploaded.com",
+                                "rating": 5,
+                                "id": 10,
+                                "restaurant_id": 19877,
+                                "user_id": 198772,
+                                "content": "Awesome",
+                            },
+                        ],
+                        "name": "sushi",
+                        "id": 10,
+                    },
+                    {
+                        "reviews": [
+                            {
+                                "photo_url": "www.photouploaded.com",
+                                "rating": 5,
+                                "id": 10,
+                                "restaurant_id": 19877,
+                                "user_id": 198772,
+                                "content": "Awesome",
+                            },
+                            {
+                                "photo_url": "www.photouploaded.com",
+                                "rating": 5,
+                                "id": 10,
+                                "restaurant_id": 19877,
+                                "user_id": 198772,
+                                "content": "Awesome",
+                            },
+                        ],
+                        "name": "sushi",
+                        "id": 10,
+                    },
+                ],
+            },
+        ],
+        "username": "theUser",
+        "favorite_foods": [
+            {
+                "reviews": [
+                    {
+                        "photo_url": "www.photouploaded.com",
+                        "rating": 5,
+                        "id": 10,
+                        "restaurant_id": 19877,
+                        "user_id": 198772,
+                        "content": "Awesome",
+                    },
+                    {
+                        "photo_url": "www.photouploaded.com",
+                        "rating": 5,
+                        "id": 10,
+                        "restaurant_id": 19877,
+                        "user_id": 198772,
+                        "content": "Awesome",
+                    },
+                ],
+                "name": "sushi",
+                "id": 10,
+            },
+            {
+                "reviews": [
+                    {
+                        "photo_url": "www.photouploaded.com",
+                        "rating": 5,
+                        "id": 10,
+                        "restaurant_id": 19877,
+                        "user_id": 198772,
+                        "content": "Awesome",
+                    },
+                    {
+                        "photo_url": "www.photouploaded.com",
+                        "rating": 5,
+                        "id": 10,
+                        "restaurant_id": 19877,
+                        "user_id": 198772,
+                        "content": "Awesome",
+                    },
+                ],
+                "name": "sushi",
+                "id": 10,
+            },
+        ],
     }
+
+    headers = {}
     response = client.request(
         "PUT",
-        "/users/{username}".format(username='username_example'),
+        "/users/{username}".format(username="username_example"),
         headers=headers,
         json=update_user,
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
-
+    # assert response.status_code == 200

@@ -22,4 +22,5 @@ class ListRestaurants(BaseModel):
 
     restaurants: List[Restaurant] = Field(alias="restaurants")
 
+
 ListRestaurants.update_forward_refs()

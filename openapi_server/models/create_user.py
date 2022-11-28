@@ -29,4 +29,5 @@ class CreateUser(BaseModel):
     email: str = Field(alias="email")
     password: str = Field(alias="password")
 
+
 CreateUser.update_forward_refs()

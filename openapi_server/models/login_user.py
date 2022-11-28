@@ -23,4 +23,5 @@ class LoginUser(BaseModel):
     username_or_email: str = Field(alias="usernameOrEmail")
     password: str = Field(alias="password")
 
+
 LoginUser.update_forward_refs()

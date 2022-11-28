@@ -31,4 +31,5 @@ class Review(BaseModel):
     content: Optional[str] = Field(alias="content", default=None)
     photo_url: Optional[str] = Field(alias="photoUrl", default=None)
 
+
 Review.update_forward_refs()

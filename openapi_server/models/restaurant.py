@@ -29,4 +29,5 @@ class Restaurant(BaseModel):
     latitude: float = Field(alias="latitude")
     address: str = Field(alias="address")
 
+
 Restaurant.update_forward_refs()

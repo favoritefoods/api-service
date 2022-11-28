@@ -14,10 +14,15 @@ def test_add_review(client: TestClient):
 
     Add a new review about a restaurant
     """
-    create_review = {"photo_url":"www.photouploaded.com","rating":5,"restaurant_id":19877,"user_id":198772,"content":"Awesome"}
-
-    headers = {
+    create_review = {
+        "photo_url": "www.photouploaded.com",
+        "rating": 5,
+        "restaurant_id": 19877,
+        "user_id": 198772,
+        "content": "Awesome",
     }
+
+    headers = {}
     response = client.request(
         "POST",
         "/reviews",
@@ -26,7 +31,7 @@ def test_add_review(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_delete_image(client: TestClient):
@@ -35,8 +40,7 @@ def test_delete_image(client: TestClient):
     deletes an image
     """
 
-    headers = {
-    }
+    headers = {}
     response = client.request(
         "DELETE",
         "/reviews/{reviewId}/image".format(reviewId=56),
@@ -44,7 +48,7 @@ def test_delete_image(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_delete_review(client: TestClient):
@@ -53,8 +57,7 @@ def test_delete_review(client: TestClient):
     Deletes a review
     """
 
-    headers = {
-    }
+    headers = {}
     response = client.request(
         "DELETE",
         "/reviews/{reviewId}".format(reviewId=56),
@@ -62,7 +65,7 @@ def test_delete_review(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_get_review_by_id(client: TestClient):
@@ -71,8 +74,7 @@ def test_get_review_by_id(client: TestClient):
     Find review by ID
     """
 
-    headers = {
-    }
+    headers = {}
     response = client.request(
         "GET",
         "/reviews/{reviewId}".format(reviewId=56),
@@ -80,7 +82,7 @@ def test_get_review_by_id(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_update_reviewby_id(client: TestClient):
@@ -88,10 +90,13 @@ def test_update_reviewby_id(client: TestClient):
 
     Update an existing review
     """
-    update_review = {"photo_url":"www.photouploaded.com","rating":5,"content":"Awesome"}
-
-    headers = {
+    update_review = {
+        "photo_url": "www.photouploaded.com",
+        "rating": 5,
+        "content": "Awesome",
     }
+
+    headers = {}
     response = client.request(
         "PUT",
         "/reviews/{reviewId}".format(reviewId=56),
@@ -100,7 +105,7 @@ def test_update_reviewby_id(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_upload_image(client: TestClient):
@@ -108,10 +113,9 @@ def test_upload_image(client: TestClient):
 
     uploads an image
     """
-    body = '/path/to/file'
-    params = [("additional_metadata", 'additional_metadata_example')]
-    headers = {
-    }
+    body = "/path/to/file"
+    params = [("additional_metadata", "additional_metadata_example")]
+    headers = {}
     response = client.request(
         "POST",
         "/reviews/{reviewId}/image".format(reviewId=56),
@@ -121,5 +125,4 @@ def test_upload_image(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
-
+    # assert response.status_code == 200

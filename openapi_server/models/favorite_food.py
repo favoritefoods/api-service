@@ -26,4 +26,5 @@ class FavoriteFood(BaseModel):
     name: str = Field(alias="name")
     reviews: List[Review] = Field(alias="reviews")
 
+
 FavoriteFood.update_forward_refs()
