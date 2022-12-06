@@ -41,8 +41,6 @@ async def create_user(
     create_user: CreateUser = Body(None, description="Created user object"),
 ) -> User:
     """"""
-    if not DbUser.exists():
-        DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
     new_user: DbUser = DbUser(create_user.username)
     new_user.update(
         actions=[
