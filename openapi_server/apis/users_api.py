@@ -22,6 +22,7 @@ from openapi_server.models.list_reviews import ListReviews
 from openapi_server.models.login_user import LoginUser
 from openapi_server.models.update_user import UpdateUser
 from openapi_server.models.user import User
+from openapi_server.orms.user import DbUser
 
 
 router = APIRouter()
@@ -39,8 +40,19 @@ router = APIRouter()
 async def create_user(
     create_user: CreateUser = Body(None, description="Created user object"),
 ) -> User:
-    """This can only be done by the logged in user."""
-    ...
+    """"""
+    if not DbUser.exists():
+        DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    new_user: DbUser = DbUser(create_user.username)
+    new_user.update(
+        actions=[
+            DbUser.first_name.set(create_user.first_name),
+            DbUser.last_name.set(create_user.last_name),
+            DbUser.email.set(create_user.email),
+            DbUser.password.set(create_user.password),
+        ]
+    )
+    new_user.save()
 
 
 @router.delete(
