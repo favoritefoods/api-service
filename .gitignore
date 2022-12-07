@@ -139,3 +139,4 @@ cython_debug/
 
 # LocalStack
 volume/
+localstack.env

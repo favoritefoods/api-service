@@ -6,6 +6,8 @@ services:
       target: service
     ports:
       - "8080:8080"
+    env_file:
+      - "./localstack.env"
     command: uvicorn openapi_server.main:app --host 0.0.0.0 --port 8080
     volumes:
       - "./openapi_server:/venv/lib/python3.7/site-packages/openapi_server"
