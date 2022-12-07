@@ -32,6 +32,6 @@ sub_router.include_router(UsersApiRouter)
 top_router.include_router(sub_router)
 app.include_router(top_router)
 
-# wait 5 seconds for LocalStack-DynamoDB to be ready
-time.sleep(5)
+# wait 10 seconds for LocalStack-DynamoDB to be ready
+time.sleep(10)
 from openapi_server.orms.dynamodb_setup import *
