@@ -19,6 +19,7 @@ from fastapi import (  # noqa: F401
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.create_user import CreateUser
 from openapi_server.models.list_reviews import ListReviews
+from openapi_server.models.login_payload import LoginPayload
 from openapi_server.models.login_user import LoginUser
 from openapi_server.models.update_user import UpdateUser
 from openapi_server.models.user import User
@@ -113,7 +114,7 @@ async def get_user_by_name(
 @router.post(
     "/users/login",
     responses={
-        200: {"model": str, "description": "successful operation"},
+        200: {"model": LoginPayload, "description": "successful operation"},
         400: {"description": "Invalid username/password supplied"},
     },
     tags=["users"],
@@ -122,7 +123,7 @@ async def get_user_by_name(
 )
 async def login_user(
     login_user: LoginUser = Body(None, description="Login information"),
-) -> str:
+) -> LoginPayload:
     """"""
     ...
 
