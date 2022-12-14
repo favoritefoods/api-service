@@ -15,3 +15,4 @@ class DbUser(Model):
     last_name: UnicodeAttribute = UnicodeAttribute(default="")
     email: UnicodeAttribute = UnicodeAttribute(default="")
     password: UnicodeAttribute = UnicodeAttribute(default="")
+    id: UnicodeAttribute = UnicodeAttribute(default="")

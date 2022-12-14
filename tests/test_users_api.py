@@ -2,6 +2,7 @@
 
 from fastapi.testclient import TestClient
 
+from moto import mock_dynamodb
 
 from openapi_server.models.create_user import CreateUser  # noqa: F401
 from openapi_server.models.list_reviews import ListReviews  # noqa: F401
@@ -9,16 +10,23 @@ from openapi_server.models.login_payload import LoginPayload  # noqa: F401
 from openapi_server.models.login_user import LoginUser  # noqa: F401
 from openapi_server.models.update_user import UpdateUser  # noqa: F401
 from openapi_server.models.user import User  # noqa: F401
+from openapi_server.main import app
+from openapi_server.orms.user import DbUser
 
 
+@mock_dynamodb
 def test_create_user(client: TestClient):
     """Test case for create_user
 
     Create user
     """
+    
+    DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+    
     create_user = {
-        "first_name": "John",
-        "last_name": "James",
+        "firstName": "John",
+        "lastName": "James",
         "password": "12345",
         "email": "john@email.com",
         "username": "theUser",
@@ -27,13 +35,23 @@ def test_create_user(client: TestClient):
     headers = {}
     response = client.request(
         "POST",
-        "/users",
+        "users",
         headers=headers,
         json=create_user,
     )
+    user_record = DbUser.get(create_user["username"])
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": user_record.id,
+        "username": create_user["username"],
+        "first_name": create_user["firstName"],
+        "last_name": create_user["lastName"],
+        "email": create_user["email"],
+        "password": create_user["password"],
+        "favorite_foods": [],
+        "friends": [],
+    }
 
 
 def test_delete_user(client: TestClient):

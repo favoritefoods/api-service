@@ -1,5 +1,7 @@
 # coding: utf-8
 
+import uuid
+
 from typing import Dict, List  # noqa: F401
 
 from fastapi import (  # noqa: F401
@@ -15,6 +17,7 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
+from fastapi.responses import JSONResponse
 
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.create_user import CreateUser
@@ -48,10 +51,23 @@ async def create_user(
             DbUser.first_name.set(create_user.first_name),
             DbUser.last_name.set(create_user.last_name),
             DbUser.email.set(create_user.email),
+            # should let Cognito handle pw storage and access in prod
             DbUser.password.set(create_user.password),
+            DbUser.id.set(uuid.uuid4().hex),  # can use Cognito id in prod
         ]
     )
     new_user.save()
+    data = {
+        "id": new_user.id,
+        "username": new_user.username,
+        "first_name": new_user.first_name,
+        "last_name": new_user.last_name,
+        "email": new_user.email,
+        "password": new_user.password,
+        "favorite_foods": [],
+        "friends": [],
+    }
+    return JSONResponse(content=data)
 
 
 @router.delete(
