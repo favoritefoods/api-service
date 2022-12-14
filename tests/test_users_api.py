@@ -1,5 +1,8 @@
 # coding: utf-8
 
+import typing
+import httpx
+
 from fastapi.testclient import TestClient
 
 from moto import mock_dynamodb
@@ -20,11 +23,11 @@ def test_create_user(client: TestClient):
 
     Create user
     """
-    
+
     DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
     client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
-    
-    create_user = {
+
+    create_user: typing.Dict = {
         "firstName": "John",
         "lastName": "James",
         "password": "12345",
@@ -32,14 +35,14 @@ def test_create_user(client: TestClient):
         "username": "theUser",
     }
 
-    headers = {}
-    response = client.request(
+    headers: typing.Dict = {}
+    response: httpx.Response = client.request(
         "POST",
         "users",
         headers=headers,
         json=create_user,
     )
-    user_record = DbUser.get(create_user["username"])
+    user_record: DbUser = DbUser.get(create_user["username"])
 
     assert response.status_code == 200
     assert response.json() == {

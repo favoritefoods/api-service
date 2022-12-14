@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import typing
 import uuid
 
 from typing import Dict, List  # noqa: F401
@@ -57,7 +58,7 @@ async def create_user(
         ]
     )
     new_user.save()
-    data = {
+    data: typing.Dict = {
         "id": new_user.id,
         "username": new_user.username,
         "first_name": new_user.first_name,
