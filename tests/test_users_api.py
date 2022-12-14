@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 
 from openapi_server.models.create_user import CreateUser  # noqa: F401
 from openapi_server.models.list_reviews import ListReviews  # noqa: F401
+from openapi_server.models.login_payload import LoginPayload  # noqa: F401
 from openapi_server.models.login_user import LoginUser  # noqa: F401
 from openapi_server.models.update_user import UpdateUser  # noqa: F401
 from openapi_server.models.user import User  # noqa: F401
@@ -91,7 +92,7 @@ def test_login_user(client: TestClient):
 
     Logs user into the system
     """
-    login_user = {"password": "12345", "username_or_email": "theUser/john@email.com"}
+    login_user = {"password": "12345", "email": "john@email.com"}
 
     headers = {}
     response = client.request(
