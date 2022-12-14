@@ -6,4 +6,25 @@ services:
       target: service
     ports:
       - "8080:8080"
+    env_file:
+      - "./localstack.env"
     command: uvicorn openapi_server.main:app --host 0.0.0.0 --port 8080
+    volumes:
+      - "./openapi_server:/venv/lib/python3.7/site-packages/openapi_server"
+    depends_on:
+      - localstack
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+    environment:
+      - DEBUG=${DEBUG-}
+      - PERSISTENCE=${PERSISTENCE-}
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - EAGER_SERVICE_LOADING=1
+      - SERVICES=dynamodb,s3
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"

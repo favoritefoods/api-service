@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   description: 'This is a Flavorite Server based on the OpenAPI 3.0 specification. '
   title: Flavorite - OpenAPI 3.0
-  version: 1.0.0
+  version: 1.0.1
 servers:
 - url: https://localhost:8080/api/v1
 tags:
@@ -270,7 +270,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/LoginPayload'
           description: successful operation
         "400":
           description: Invalid username/password supplied
@@ -827,20 +827,38 @@ components:
     LoginUser:
       example:
         password: "12345"
-        usernameOrEmail: theUser/john@email.com
+        email: john@email.com
       properties:
-        usernameOrEmail:
-          example: theUser/john@email.com
-          title: usernameOrEmail
+        email:
+          example: john@email.com
+          title: email
           type: string
         password:
           example: "12345"
           title: password
           type: string
       required:
+      - email
       - password
-      - usernameOrEmail
       title: LoginUser
+      type: object
+    LoginPayload:
+      example:
+        token: XXXXXXXX
+        username: theUser
+      properties:
+        token:
+          example: XXXXXXXX
+          title: token
+          type: string
+        username:
+          example: theUser
+          title: username
+          type: string
+      required:
+      - token
+      - username
+      title: LoginPayload
       type: object
     Restaurant:
       example:
