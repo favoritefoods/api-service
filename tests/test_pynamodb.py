@@ -33,6 +33,8 @@ class Thread(Model):
     )
 
 
+# start LocalStack server and uncomment below to test
+"""
 # Create
 if not Thread.exists():
     Thread.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
@@ -76,3 +78,4 @@ def test_delete_item():
 def test_delete_table():
     Thread.delete_table()
     assert not Thread.exists()
+"""
