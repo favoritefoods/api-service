@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 from pynamodb.models import Model
 from pynamodb.attributes import (
     UnicodeAttribute,
@@ -8,7 +9,7 @@ from pynamodb.attributes import (
 class DbUser(Model):
     class Meta:
         table_name: str = "User"
-        host: str = os.environ.get("AWS_DYNAMODB_HOST")
+        host: Optional[str] = os.environ.get("AWS_DYNAMODB_HOST")
 
     username: UnicodeAttribute = UnicodeAttribute(hash_key=True, default="")
     first_name: UnicodeAttribute = UnicodeAttribute(default="")

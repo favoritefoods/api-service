@@ -14,6 +14,7 @@ import typing
 import time
 
 from httpx import AsyncClient
+from httpx import Response
 
 from fastapi import FastAPI, APIRouter
 
@@ -47,7 +48,7 @@ async def is_localstack():
 # function to get status of localstack server "ready" stage
 async def localstack_status() -> typing.Dict[str, typing.Any]:
     async with AsyncClient(base_url=os.environ.get("AWS_DYNAMODB_HOST")) as ac:
-        response: typing.Dict[str, typing.Any] = await ac.get("/_localstack/init/ready")
+        response: Response = await ac.get("/_localstack/init/ready")
     return response.json()
 
 

@@ -48,11 +48,11 @@ def test_create_user(client: TestClient):
     assert response.json() == {
         "id": user_record.id,
         "username": create_user["username"],
-        "first_name": create_user["firstName"],
-        "last_name": create_user["lastName"],
+        "firstName": create_user["firstName"],
+        "lastName": create_user["lastName"],
         "email": create_user["email"],
         "password": create_user["password"],
-        "favorite_foods": [],
+        "favoriteFoods": [],
         "friends": [],
     }
 

@@ -1,6 +1,5 @@
 # coding: utf-8
 
-import typing
 import uuid
 
 from typing import Dict, List  # noqa: F401
@@ -18,7 +17,6 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-from fastapi.responses import JSONResponse
 
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.create_user import CreateUser
@@ -58,17 +56,16 @@ async def create_user(
         ]
     )
     new_user.save()
-    data: typing.Dict = {
-        "id": new_user.id,
-        "username": new_user.username,
-        "first_name": new_user.first_name,
-        "last_name": new_user.last_name,
-        "email": new_user.email,
-        "password": new_user.password,
-        "favorite_foods": [],
-        "friends": [],
-    }
-    return JSONResponse(content=data)
+    return User(
+        id=new_user.id,
+        username=new_user.username,
+        firstName=new_user.first_name,
+        lastName=new_user.last_name,
+        email=new_user.email,
+        password=new_user.password,
+        favoriteFoods=[],
+        friends=[],
+    )
 
 
 @router.delete(
