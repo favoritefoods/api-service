@@ -18,7 +18,7 @@ def test_add_review(client: TestClient):
         "photo_url": "www.photouploaded.com",
         "rating": 5,
         "restaurant_id": 19877,
-        "user_id": 198772,
+        "user_id": "198772",
         "content": "Awesome",
     }
 

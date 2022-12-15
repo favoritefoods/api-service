@@ -23,7 +23,7 @@ class CreateReview(BaseModel):
         photo_url: The photo_url of this CreateReview [Optional].
     """
 
-    user_id: int = Field(alias="userId")
+    user_id: str = Field(alias="userId")
     restaurant_id: int = Field(alias="restaurantId")
     rating: int = Field(alias="rating")
     content: Optional[str] = Field(alias="content", default=None)

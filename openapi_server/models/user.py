@@ -27,7 +27,7 @@ class User(BaseModel):
         friends: The friends of this User.
     """
 
-    id: int = Field(alias="id")
+    id: str = Field(alias="id")
     username: str = Field(alias="username")
     first_name: str = Field(alias="firstName")
     last_name: str = Field(alias="lastName")

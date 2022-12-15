@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   description: 'This is a Flavorite Server based on the OpenAPI 3.0 specification. '
   title: Flavorite - OpenAPI 3.0
-  version: 1.0.1
+  version: 1.0.2
 servers:
 - url: https://localhost:8080/api/v1
 tags:
@@ -426,7 +426,7 @@ components:
         rating: 5
         id: 10
         restaurantId: 19877
-        userId: 198772
+        userId: "198772"
         content: Awesome
       properties:
         id:
@@ -435,10 +435,9 @@ components:
           title: id
           type: integer
         userId:
-          example: 198772
-          format: int64
+          example: "198772"
           title: userId
-          type: integer
+          type: string
         restaurantId:
           example: 19877
           format: int64
@@ -471,13 +470,13 @@ components:
           rating: 5
           id: 10
           restaurantId: 19877
-          userId: 198772
+          userId: "198772"
           content: Awesome
         - photoUrl: www.photouploaded.com
           rating: 5
           id: 10
           restaurantId: 19877
-          userId: 198772
+          userId: "198772"
           content: Awesome
       properties:
         reviews:
@@ -494,14 +493,13 @@ components:
         photoUrl: www.photouploaded.com
         rating: 5
         restaurantId: 19877
-        userId: 198772
+        userId: "198772"
         content: Awesome
       properties:
         userId:
-          example: 198772
-          format: int64
+          example: "198772"
           title: userId
-          type: integer
+          type: string
         restaurantId:
           example: 19877
           format: int64
@@ -552,7 +550,7 @@ components:
         firstName: John
         lastName: James
         password: "12345"
-        id: 10
+        id: "10"
         email: john@email.com
         friends:
         - null
@@ -564,13 +562,13 @@ components:
             rating: 5
             id: 10
             restaurantId: 19877
-            userId: 198772
+            userId: "198772"
             content: Awesome
           - photoUrl: www.photouploaded.com
             rating: 5
             id: 10
             restaurantId: 19877
-            userId: 198772
+            userId: "198772"
             content: Awesome
           name: sushi
           id: 10
@@ -579,22 +577,21 @@ components:
             rating: 5
             id: 10
             restaurantId: 19877
-            userId: 198772
+            userId: "198772"
             content: Awesome
           - photoUrl: www.photouploaded.com
             rating: 5
             id: 10
             restaurantId: 19877
-            userId: 198772
+            userId: "198772"
             content: Awesome
           name: sushi
           id: 10
       properties:
         id:
-          example: 10
-          format: int64
+          example: "10"
           title: id
-          type: integer
+          type: string
         username:
           example: theUser
           title: username
@@ -682,7 +679,7 @@ components:
         - firstName: John
           lastName: James
           password: "12345"
-          id: 10
+          id: "10"
           email: john@email.com
           friends:
           - null
@@ -694,13 +691,13 @@ components:
               rating: 5
               id: 10
               restaurantId: 19877
-              userId: 198772
+              userId: "198772"
               content: Awesome
             - photoUrl: www.photouploaded.com
               rating: 5
               id: 10
               restaurantId: 19877
-              userId: 198772
+              userId: "198772"
               content: Awesome
             name: sushi
             id: 10
@@ -709,20 +706,20 @@ components:
               rating: 5
               id: 10
               restaurantId: 19877
-              userId: 198772
+              userId: "198772"
               content: Awesome
             - photoUrl: www.photouploaded.com
               rating: 5
               id: 10
               restaurantId: 19877
-              userId: 198772
+              userId: "198772"
               content: Awesome
             name: sushi
             id: 10
         - firstName: John
           lastName: James
           password: "12345"
-          id: 10
+          id: "10"
           email: john@email.com
           friends:
           - null
@@ -734,13 +731,13 @@ components:
               rating: 5
               id: 10
               restaurantId: 19877
-              userId: 198772
+              userId: "198772"
               content: Awesome
             - photoUrl: www.photouploaded.com
               rating: 5
               id: 10
               restaurantId: 19877
-              userId: 198772
+              userId: "198772"
               content: Awesome
             name: sushi
             id: 10
@@ -749,13 +746,13 @@ components:
               rating: 5
               id: 10
               restaurantId: 19877
-              userId: 198772
+              userId: "198772"
               content: Awesome
             - photoUrl: www.photouploaded.com
               rating: 5
               id: 10
               restaurantId: 19877
-              userId: 198772
+              userId: "198772"
               content: Awesome
             name: sushi
             id: 10
@@ -766,13 +763,13 @@ components:
             rating: 5
             id: 10
             restaurantId: 19877
-            userId: 198772
+            userId: "198772"
             content: Awesome
           - photoUrl: www.photouploaded.com
             rating: 5
             id: 10
             restaurantId: 19877
-            userId: 198772
+            userId: "198772"
             content: Awesome
           name: sushi
           id: 10
@@ -781,13 +778,13 @@ components:
             rating: 5
             id: 10
             restaurantId: 19877
-            userId: 198772
+            userId: "198772"
             content: Awesome
           - photoUrl: www.photouploaded.com
             rating: 5
             id: 10
             restaurantId: 19877
-            userId: 198772
+            userId: "198772"
             content: Awesome
           name: sushi
           id: 10
@@ -929,13 +926,13 @@ components:
           rating: 5
           id: 10
           restaurantId: 19877
-          userId: 198772
+          userId: "198772"
           content: Awesome
         - photoUrl: www.photouploaded.com
           rating: 5
           id: 10
           restaurantId: 19877
-          userId: 198772
+          userId: "198772"
           content: Awesome
         name: sushi
         id: 10
