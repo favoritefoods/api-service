@@ -72,6 +72,7 @@ async def create_user(
     "/users/{username}",
     responses={
         204: {"description": "Successful operation"},
+        # not sure if this code '400' is necessary (front-end check?)
         400: {"description": "Invalid username supplied"},
         404: {"description": "User not found"},
     },
@@ -83,7 +84,11 @@ async def delete_user(
     username: str = Path(None, description="Name of user that needs to be deleted"),
 ) -> None:
     """This can only be done by the logged in user."""
-    ...
+    try:
+        DbUser.get(username).delete()
+        return Response(status_code=204)
+    except Exception as does_not_exist:
+        return Response(status_code=404)
 
 
 @router.get(

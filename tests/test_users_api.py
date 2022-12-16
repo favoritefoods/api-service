@@ -57,21 +57,32 @@ def test_create_user(client: TestClient):
     }
 
 
+@mock_dynamodb
 def test_delete_user(client: TestClient):
     """Test case for delete_user
 
     Delete user
     """
 
-    headers = {}
-    response = client.request(
+    DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+    test_create_user(client)  # using above test to create a user w/ username="theUser"
+
+    headers: typing.Dict = {}
+    response: httpx.Response = client.request(
         "DELETE",
-        "/users/{username}".format(username="username_example"),
+        "users/{username}".format(username="theUser"),
         headers=headers,
     )
+    assert response.status_code == 204
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    # trying to delete already deleted record
+    response = client.request(
+        "DELETE",
+        "users/{username}".format(username="theUser"),
+        headers=headers,
+    )
+    assert response.status_code == 404
 
 
 def test_get_reviews_by_username(client: TestClient):
