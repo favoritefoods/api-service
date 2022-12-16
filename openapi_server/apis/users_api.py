@@ -2,7 +2,7 @@
 
 import uuid
 
-from typing import Dict, List  # noqa: F401
+from typing import Dict, List, Union  # noqa: F401
 
 from fastapi import (  # noqa: F401
     APIRouter,
@@ -35,6 +35,7 @@ router = APIRouter()
     "/users",
     responses={
         200: {"model": User, "description": "successful operation"},
+        409: {"description": "Username already exists"},
     },
     tags=["users"],
     summary="Create user",
@@ -42,8 +43,14 @@ router = APIRouter()
 )
 async def create_user(
     create_user: CreateUser = Body(None, description="Created user object"),
-) -> User:
+) -> Union[User, Response]:
     """"""
+    try:
+        DbUser.get(create_user.username)
+        return Response(status_code=409)
+    except Exception as e:
+        pass
+
     new_user: DbUser = DbUser(create_user.username)
     new_user.update(
         actions=[

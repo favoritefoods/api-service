@@ -240,6 +240,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '409':
+          description: Username already exists
   /users/login:
     post:
       tags:

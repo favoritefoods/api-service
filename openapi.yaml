@@ -256,6 +256,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
           description: successful operation
+        "409":
+          description: Username already exists
       summary: Create user
       tags:
       - users

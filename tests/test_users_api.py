@@ -56,6 +56,15 @@ def test_create_user(client: TestClient):
         "friends": [],
     }
 
+    # create user with same values
+    response = client.request(
+        "POST",
+        "users",
+        headers=headers,
+        json=create_user,
+    )
+    assert response.status_code == 409
+
 
 @mock_dynamodb
 def test_delete_user(client: TestClient):
