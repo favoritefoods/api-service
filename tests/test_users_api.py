@@ -111,21 +111,43 @@ def test_get_reviews_by_username(client: TestClient):
     # assert response.status_code == 200
 
 
+@mock_dynamodb
 def test_get_user_by_name(client: TestClient):
     """Test case for get_user_by_name
 
     Get user by user name
     """
+    DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+    test_create_user(client)  # using above test to create a user w/ username="theUser"
 
     headers = {}
-    response = client.request(
+    response: httpx.Response = client.request(
         "GET",
-        "/users/{username}".format(username="username_example"),
+        "users/{username}".format(username="theUser"),
         headers=headers,
     )
+    user_record: DbUser = DbUser.get("theUser")
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": user_record.id,
+        "username": user_record.username,
+        "firstName": user_record.first_name,
+        "lastName": user_record.last_name,
+        "email": user_record.email,
+        "password": user_record.password,
+        "favoriteFoods": [],
+        "friends": [],
+    }
+    
+    # searching for username that doesn't exist
+    response = client.request(
+        "GET",
+        "users/{username}".format(username="notTheUser"),
+        headers=headers,
+    )
+    assert response.status_code == 404
 
 
 def test_login_user(client: TestClient):

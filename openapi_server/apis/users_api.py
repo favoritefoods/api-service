@@ -130,11 +130,24 @@ async def get_reviews_by_username(
 )
 async def get_user_by_name(
     username: str = Path(
-        None, description="The name that needs to be fetched. Use user1 for testing. "
+        None, description="The name that needs to be fetched"
     ),
-) -> User:
+) -> Union[User, Response]:
     """"""
-    ...
+    try:
+        user: DbUser = DbUser.get(username)
+        return User(
+            id=user.id,
+            username=user.username,
+            firstName=user.first_name,
+            lastName=user.last_name,
+            email=user.email,
+            password=user.password,
+            favoriteFoods=[],
+            friends=[],
+        )
+    except Exception as does_not_exist:
+        return Response(status_code=404)
 
 
 @router.post(
