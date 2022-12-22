@@ -22,6 +22,8 @@ class Review(BaseModel):
         rating: The rating of this Review.
         content: The content of this Review [Optional].
         photo_url: The photo_url of this Review [Optional].
+        favorite_food: The favorite_food of this Review.
+        starred: The starred of this Review.
     """
 
     id: int = Field(alias="id")
@@ -30,6 +32,8 @@ class Review(BaseModel):
     rating: int = Field(alias="rating")
     content: Optional[str] = Field(alias="content", default=None)
     photo_url: Optional[str] = Field(alias="photoUrl", default=None)
+    favorite_food: str = Field(alias="favoriteFood")
+    starred: bool = Field(alias="starred")
 
 
 Review.update_forward_refs()

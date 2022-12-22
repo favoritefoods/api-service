@@ -19,6 +19,8 @@ src/openapi_server/models/create_review.py
 src/openapi_server/models/create_user.py
 src/openapi_server/models/extra_models.py
 src/openapi_server/models/favorite_food.py
+src/openapi_server/models/list_favorite_foods.py
+src/openapi_server/models/list_friends.py
 src/openapi_server/models/list_restaurants.py
 src/openapi_server/models/list_reviews.py
 src/openapi_server/models/login_payload.py

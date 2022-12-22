@@ -20,6 +20,8 @@ from fastapi import (  # noqa: F401
 
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.create_user import CreateUser
+from openapi_server.models.list_favorite_foods import ListFavoriteFoods
+from openapi_server.models.list_friends import ListFriends
 from openapi_server.models.list_reviews import ListReviews
 from openapi_server.models.login_payload import LoginPayload
 from openapi_server.models.login_user import LoginUser
@@ -99,6 +101,40 @@ async def delete_user(
 
 
 @router.get(
+    "/users/{username}/favorite-foods",
+    responses={
+        200: {"model": ListFavoriteFoods, "description": "successful operation"},
+        404: {"description": "User not found"},
+    },
+    tags=["users"],
+    summary="Get favorite foods of a user",
+    response_model_by_alias=True,
+)
+async def get_favorite_foods(
+    username: str = Path(None, description="Name of user"),
+) -> ListFavoriteFoods:
+    """"""
+    ...
+
+
+@router.get(
+    "/users/{username}/friends",
+    responses={
+        200: {"model": ListFriends, "description": "successful operation"},
+        404: {"description": "User not found"},
+    },
+    tags=["users"],
+    summary="Get friends of a user",
+    response_model_by_alias=True,
+)
+async def get_friends(
+    username: str = Path(None, description="Name of user"),
+) -> ListFriends:
+    """"""
+    ...
+
+
+@router.get(
     "/users/{username}/reviews",
     responses={
         200: {"model": ListReviews, "description": "successful operation"},
@@ -129,9 +165,7 @@ async def get_reviews_by_username(
     response_model_by_alias=True,
 )
 async def get_user_by_name(
-    username: str = Path(
-        None, description="The name that needs to be fetched"
-    ),
+    username: str = Path(None, description="The name that needs to be fetched"),
 ) -> Union[User, Response]:
     """"""
     try:
@@ -178,6 +212,26 @@ async def login_user(
 )
 async def logout_user() -> None:
     """"""
+    ...
+
+
+@router.put(
+    "/users/{username}/favorite-foods",
+    responses={
+        200: {"model": ListFavoriteFoods, "description": "successful operation"},
+        404: {"description": "User not found"},
+    },
+    tags=["users"],
+    summary="Update favorite foods of a user",
+    response_model_by_alias=True,
+)
+async def update_favorite_foods(
+    username: str = Path(None, description="Name of user"),
+    list_favorite_foods: ListFavoriteFoods = Body(
+        None, description="Update user&#39;s list of favorite foods"
+    ),
+) -> ListFavoriteFoods:
+    """This can only be done by the logged in user."""
     ...
 
 

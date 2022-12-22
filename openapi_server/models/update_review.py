@@ -19,11 +19,15 @@ class UpdateReview(BaseModel):
         rating: The rating of this UpdateReview [Optional].
         content: The content of this UpdateReview [Optional].
         photo_url: The photo_url of this UpdateReview [Optional].
+        favorite_food: The favorite_food of this UpdateReview [Optional].
+        starred: The starred of this UpdateReview [Optional].
     """
 
     rating: Optional[int] = Field(alias="rating", default=None)
     content: Optional[str] = Field(alias="content", default=None)
     photo_url: Optional[str] = Field(alias="photoUrl", default=None)
+    favorite_food: Optional[str] = Field(alias="favoriteFood", default=None)
+    starred: Optional[bool] = Field(alias="starred", default=None)
 
 
 UpdateReview.update_forward_refs()

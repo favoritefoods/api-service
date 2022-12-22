@@ -7,7 +7,6 @@ import re  # noqa: F401
 from typing import Any, Dict, List, Optional  # noqa: F401
 
 from pydantic import AnyUrl, BaseModel, EmailStr, Field, validator  # noqa: F401
-from openapi_server.models.favorite_food import FavoriteFood
 
 
 class User(BaseModel):
@@ -23,8 +22,6 @@ class User(BaseModel):
         last_name: The last_name of this User.
         email: The email of this User.
         password: The password of this User.
-        favorite_foods: The favorite_foods of this User.
-        friends: The friends of this User.
     """
 
     id: str = Field(alias="id")
@@ -33,8 +30,6 @@ class User(BaseModel):
     last_name: str = Field(alias="lastName")
     email: str = Field(alias="email")
     password: str = Field(alias="password")
-    favorite_foods: List[FavoriteFood] = Field(alias="favoriteFoods")
-    friends: List[User] = Field(alias="friends")
 
 
 User.update_forward_refs()

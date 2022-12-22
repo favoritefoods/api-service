@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   description: 'This is a Flavorite Server based on the OpenAPI 3.0 specification. '
   title: Flavorite - OpenAPI 3.0
-  version: 1.0.2
+  version: 1.1.0
 servers:
 - url: https://localhost:8080/api/v1
 tags:
@@ -384,6 +384,82 @@ paths:
       summary: Get reviews by user name
       tags:
       - users
+  /users/{username}/favorite-foods:
+    get:
+      description: ""
+      operationId: getFavoriteFoods
+      parameters:
+      - description: Name of user
+        explode: false
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFavoriteFoods'
+          description: successful operation
+        "404":
+          description: User not found
+      summary: Get favorite foods of a user
+      tags:
+      - users
+    put:
+      description: This can only be done by the logged in user.
+      operationId: updateFavoriteFoods
+      parameters:
+      - description: Name of user
+        explode: false
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/ListFavoriteFoods'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFavoriteFoods'
+          description: successful operation
+        "404":
+          description: User not found
+      summary: Update favorite foods of a user
+      tags:
+      - users
+  /users/{username}/friends:
+    get:
+      description: ""
+      operationId: getFriends
+      parameters:
+      - description: Name of user
+        explode: false
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFriends'
+          description: successful operation
+        "404":
+          description: User not found
+      summary: Get friends of a user
+      tags:
+      - users
 components:
   requestBodies:
     CreateReview:
@@ -421,10 +497,18 @@ components:
             $ref: '#/components/schemas/UpdateUser'
       description: Update an existent user in the store
       required: true
+    ListFavoriteFoods:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListFavoriteFoods'
+      description: Update user's list of favorite foods
   schemas:
     Review:
       example:
         photoUrl: www.photouploaded.com
+        starred: true
+        favoriteFood: pizza
         rating: 5
         id: 10
         restaurantId: 19877
@@ -458,10 +542,20 @@ components:
           example: www.photouploaded.com
           title: photoUrl
           type: string
+        favoriteFood:
+          example: pizza
+          title: favoriteFood
+          type: string
+        starred:
+          example: true
+          title: starred
+          type: boolean
       required:
+      - favoriteFood
       - id
       - rating
       - restaurantId
+      - starred
       - userId
       title: Review
       type: object
@@ -469,12 +563,16 @@ components:
       example:
         reviews:
         - photoUrl: www.photouploaded.com
+          starred: true
+          favoriteFood: pizza
           rating: 5
           id: 10
           restaurantId: 19877
           userId: "198772"
           content: Awesome
         - photoUrl: www.photouploaded.com
+          starred: true
+          favoriteFood: pizza
           rating: 5
           id: 10
           restaurantId: 19877
@@ -493,6 +591,8 @@ components:
     CreateReview:
       example:
         photoUrl: www.photouploaded.com
+        starred: true
+        favoriteFood: pizza
         rating: 5
         restaurantId: 19877
         userId: "198772"
@@ -520,15 +620,27 @@ components:
           example: www.photouploaded.com
           title: photoUrl
           type: string
+        favoriteFood:
+          example: pizza
+          title: favoriteFood
+          type: string
+        starred:
+          example: true
+          title: starred
+          type: boolean
       required:
+      - favoriteFood
       - rating
       - restaurantId
+      - starred
       - userId
       title: CreateReview
       type: object
     UpdateReview:
       example:
         photoUrl: www.photouploaded.com
+        starred: true
+        favoriteFood: pizza
         rating: 5
         content: Awesome
       properties:
@@ -545,6 +657,14 @@ components:
           example: www.photouploaded.com
           title: photoUrl
           type: string
+        favoriteFood:
+          example: pizza
+          title: favoriteFood
+          type: string
+        starred:
+          example: true
+          title: starred
+          type: boolean
       title: UpdateReview
       type: object
     User:
@@ -554,41 +674,7 @@ components:
         password: "12345"
         id: "10"
         email: john@email.com
-        friends:
-        - null
-        - null
         username: theUser
-        favoriteFoods:
-        - reviews:
-          - photoUrl: www.photouploaded.com
-            rating: 5
-            id: 10
-            restaurantId: 19877
-            userId: "198772"
-            content: Awesome
-          - photoUrl: www.photouploaded.com
-            rating: 5
-            id: 10
-            restaurantId: 19877
-            userId: "198772"
-            content: Awesome
-          name: sushi
-          id: 10
-        - reviews:
-          - photoUrl: www.photouploaded.com
-            rating: 5
-            id: 10
-            restaurantId: 19877
-            userId: "198772"
-            content: Awesome
-          - photoUrl: www.photouploaded.com
-            rating: 5
-            id: 10
-            restaurantId: 19877
-            userId: "198772"
-            content: Awesome
-          name: sushi
-          id: 10
       properties:
         id:
           example: "10"
@@ -614,21 +700,9 @@ components:
           example: "12345"
           title: password
           type: string
-        favoriteFoods:
-          items:
-            $ref: '#/components/schemas/FavoriteFood'
-          title: favoriteFoods
-          type: array
-        friends:
-          items:
-            $ref: '#/components/schemas/User'
-          title: friends
-          type: array
       required:
       - email
-      - favoriteFoods
       - firstName
-      - friends
       - id
       - lastName
       - password
@@ -677,119 +751,7 @@ components:
         lastName: James
         password: "12345"
         email: john@email.com
-        friends:
-        - firstName: John
-          lastName: James
-          password: "12345"
-          id: "10"
-          email: john@email.com
-          friends:
-          - null
-          - null
-          username: theUser
-          favoriteFoods:
-          - reviews:
-            - photoUrl: www.photouploaded.com
-              rating: 5
-              id: 10
-              restaurantId: 19877
-              userId: "198772"
-              content: Awesome
-            - photoUrl: www.photouploaded.com
-              rating: 5
-              id: 10
-              restaurantId: 19877
-              userId: "198772"
-              content: Awesome
-            name: sushi
-            id: 10
-          - reviews:
-            - photoUrl: www.photouploaded.com
-              rating: 5
-              id: 10
-              restaurantId: 19877
-              userId: "198772"
-              content: Awesome
-            - photoUrl: www.photouploaded.com
-              rating: 5
-              id: 10
-              restaurantId: 19877
-              userId: "198772"
-              content: Awesome
-            name: sushi
-            id: 10
-        - firstName: John
-          lastName: James
-          password: "12345"
-          id: "10"
-          email: john@email.com
-          friends:
-          - null
-          - null
-          username: theUser
-          favoriteFoods:
-          - reviews:
-            - photoUrl: www.photouploaded.com
-              rating: 5
-              id: 10
-              restaurantId: 19877
-              userId: "198772"
-              content: Awesome
-            - photoUrl: www.photouploaded.com
-              rating: 5
-              id: 10
-              restaurantId: 19877
-              userId: "198772"
-              content: Awesome
-            name: sushi
-            id: 10
-          - reviews:
-            - photoUrl: www.photouploaded.com
-              rating: 5
-              id: 10
-              restaurantId: 19877
-              userId: "198772"
-              content: Awesome
-            - photoUrl: www.photouploaded.com
-              rating: 5
-              id: 10
-              restaurantId: 19877
-              userId: "198772"
-              content: Awesome
-            name: sushi
-            id: 10
         username: theUser
-        favoriteFoods:
-        - reviews:
-          - photoUrl: www.photouploaded.com
-            rating: 5
-            id: 10
-            restaurantId: 19877
-            userId: "198772"
-            content: Awesome
-          - photoUrl: www.photouploaded.com
-            rating: 5
-            id: 10
-            restaurantId: 19877
-            userId: "198772"
-            content: Awesome
-          name: sushi
-          id: 10
-        - reviews:
-          - photoUrl: www.photouploaded.com
-            rating: 5
-            id: 10
-            restaurantId: 19877
-            userId: "198772"
-            content: Awesome
-          - photoUrl: www.photouploaded.com
-            rating: 5
-            id: 10
-            restaurantId: 19877
-            userId: "198772"
-            content: Awesome
-          name: sushi
-          id: 10
       properties:
         username:
           example: theUser
@@ -811,16 +773,6 @@ components:
           example: "12345"
           title: password
           type: string
-        favoriteFoods:
-          items:
-            $ref: '#/components/schemas/FavoriteFood'
-          title: favoriteFoods
-          type: array
-        friends:
-          items:
-            $ref: '#/components/schemas/User'
-          title: friends
-          type: array
       title: UpdateUser
       type: object
     LoginUser:
@@ -923,19 +875,6 @@ components:
       type: object
     FavoriteFood:
       example:
-        reviews:
-        - photoUrl: www.photouploaded.com
-          rating: 5
-          id: 10
-          restaurantId: 19877
-          userId: "198772"
-          content: Awesome
-        - photoUrl: www.photouploaded.com
-          rating: 5
-          id: 10
-          restaurantId: 19877
-          userId: "198772"
-          content: Awesome
         name: sushi
         id: 10
       properties:
@@ -948,16 +887,52 @@ components:
           example: sushi
           title: name
           type: string
-        reviews:
-          items:
-            $ref: '#/components/schemas/Review'
-          title: reviews
-          type: array
       required:
       - id
       - name
-      - reviews
       title: FavoriteFood
+      type: object
+    ListFavoriteFoods:
+      example:
+        favoriteFoods:
+        - name: sushi
+          id: 10
+        - name: sushi
+          id: 10
+      properties:
+        favoriteFoods:
+          items:
+            $ref: '#/components/schemas/FavoriteFood'
+          title: favoriteFoods
+          type: array
+      required:
+      - favoriteFoods
+      title: ListFavoriteFoods
+      type: object
+    ListFriends:
+      example:
+        friends:
+        - firstName: John
+          lastName: James
+          password: "12345"
+          id: "10"
+          email: john@email.com
+          username: theUser
+        - firstName: John
+          lastName: James
+          password: "12345"
+          id: "10"
+          email: john@email.com
+          username: theUser
+      properties:
+        friends:
+          items:
+            $ref: '#/components/schemas/User'
+          title: friends
+          type: array
+      required:
+      - friends
+      title: ListFriends
       type: object
     ApiResponse:
       example:
