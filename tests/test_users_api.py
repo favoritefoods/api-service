@@ -54,8 +54,6 @@ def test_create_user(client: TestClient):
         "lastName": create_user["lastName"],
         "email": create_user["email"],
         "password": create_user["password"],
-        "favoriteFoods": [],
-        "friends": [],
     }
 
     # create user with same values
@@ -157,7 +155,7 @@ def test_get_user_by_name(client: TestClient):
     client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
     test_create_user(client)  # using above test to create a user w/ username="theUser"
 
-    headers = {}
+    headers: typing.Dict = {}
     response: httpx.Response = client.request(
         "GET",
         "users/{username}".format(username="theUser"),
@@ -173,8 +171,6 @@ def test_get_user_by_name(client: TestClient):
         "lastName": user_record.last_name,
         "email": user_record.email,
         "password": user_record.password,
-        "favoriteFoods": [],
-        "friends": [],
     }
 
     # searching for username that doesn't exist

@@ -72,8 +72,6 @@ async def create_user(
         lastName=new_user.last_name,
         email=new_user.email,
         password=new_user.password,
-        favoriteFoods=[],
-        friends=[],
     )
 
 
@@ -91,7 +89,7 @@ async def create_user(
 )
 async def delete_user(
     username: str = Path(None, description="Name of user that needs to be deleted"),
-) -> None:
+) -> Response:
     """This can only be done by the logged in user."""
     try:
         DbUser.get(username).delete()
@@ -177,8 +175,6 @@ async def get_user_by_name(
             lastName=user.last_name,
             email=user.email,
             password=user.password,
-            favoriteFoods=[],
-            friends=[],
         )
     except Exception as does_not_exist:
         return Response(status_code=404)
