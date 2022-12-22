@@ -3,7 +3,7 @@ info:
   title: Flavorite - OpenAPI 3.0
   description: >-
     This is a Flavorite Server based on the OpenAPI 3.0 specification. 
-  version: 1.0.2
+  version: 1.1.0
 servers:
   - url: https://localhost:8080/api/v1
 tags:
@@ -357,6 +357,76 @@ paths:
                 $ref: '#/components/schemas/ListReviews'
         '400':
           description: Invalid username supplied
+  /users/{username}/favorite-foods:
+    get:
+      tags:
+        - users
+      summary: Get favorite foods of a user
+      description: ''
+      operationId: getFavoriteFoods
+      parameters:
+        - name: username
+          in: path
+          description: Name of user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFavoriteFoods'
+        '404':
+          description: User not found
+    put:
+      tags:
+        - users
+      summary: Update favorite foods of a user
+      description: This can only be done by the logged in user.
+      operationId: updateFavoriteFoods
+      parameters:
+        - name: username
+          in: path
+          description: Name of user
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/ListFavoriteFoods'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFavoriteFoods'
+        '404':
+          description: User not found
+  /users/{username}/friends:
+    get:
+      tags:
+        - users
+      summary: Get friends of a user
+      description: ''
+      operationId: getFriends
+      parameters:
+        - name: username
+          in: path
+          description: Name of user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFriends'
+        '404':
+          description: User not found
 components:
   schemas:
     Review:
@@ -365,6 +435,8 @@ components:
         - userId
         - restaurantId
         - rating
+        - favoriteFood
+        - starred
       type: object
       properties:
         id:
@@ -388,6 +460,12 @@ components:
         photoUrl:
           type: string
           example: www.photouploaded.com
+        favoriteFood:
+          type: string
+          example: pizza
+        starred:
+          type: boolean
+          example: true
     ListReviews:
       required:
         - reviews
@@ -405,6 +483,8 @@ components:
         - userId
         - restaurantId
         - rating
+        - favoriteFood
+        - starred
       type: object
       properties:
         userId:
@@ -424,6 +504,12 @@ components:
         photoUrl:
           type: string
           example: www.photouploaded.com
+        favoriteFood:
+          type: string
+          example: pizza
+        starred:
+          type: boolean
+          example: true
     UpdateReview:
       type: object
       properties:
@@ -437,6 +523,12 @@ components:
         photoUrl:
           type: string
           example: www.photouploaded.com
+        favoriteFood:
+          type: string
+          example: pizza
+        starred:
+          type: boolean
+          example: true
     User:
       required:
         - id
@@ -445,8 +537,6 @@ components:
         - lastName
         - email
         - password
-        - favoriteFoods
-        - friends
       type: object
       properties:
         id:
@@ -467,14 +557,6 @@ components:
         password:
           type: string
           example: '12345'
-        favoriteFoods:
-          type: array
-          items: 
-            $ref: '#/components/schemas/FavoriteFood'
-        friends:
-          type: array
-          items: 
-            $ref: '#/components/schemas/User'
     CreateUser:
       required:
         - username
@@ -517,14 +599,6 @@ components:
         password:
           type: string
           example: '12345'
-        favoriteFoods:
-          type: array
-          items: 
-            $ref: '#/components/schemas/FavoriteFood'
-        friends:
-          type: array
-          items: 
-            $ref: '#/components/schemas/User'
     LoginUser:
       required:
         - email
@@ -592,7 +666,6 @@ components:
       required:
         - id
         - name
-        - reviews
       type: object
       properties:
         id:
@@ -602,10 +675,24 @@ components:
         name:
           type: string
           example: sushi
-        reviews:
+    ListFavoriteFoods:
+      required:
+        - favoriteFoods
+      type: object
+      properties:
+        favoriteFoods:
           type: array
           items: 
-            $ref: '#/components/schemas/Review'
+            $ref: '#/components/schemas/FavoriteFood'
+    ListFriends:
+      required:
+        - friends
+      type: object
+      properties:
+        friends:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     ApiResponse:
       type: object
       properties:
@@ -652,3 +739,9 @@ components:
           schema:
             $ref: '#/components/schemas/UpdateUser'
       required: true
+    ListFavoriteFoods:
+      description: Update user's list of favorite foods
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListFavoriteFoods'
