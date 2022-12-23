@@ -3,7 +3,15 @@ from typing import Optional
 from pynamodb.models import Model
 from pynamodb.attributes import (
     UnicodeAttribute,
+    NumberAttribute,
+    MapAttribute,
+    ListAttribute,
 )
+
+
+class FavoriteFood(MapAttribute):
+    id: NumberAttribute = NumberAttribute(default=0)
+    name: UnicodeAttribute = UnicodeAttribute(default="")
 
 
 class DbUser(Model):
@@ -17,3 +25,5 @@ class DbUser(Model):
     email: UnicodeAttribute = UnicodeAttribute(default="")
     password: UnicodeAttribute = UnicodeAttribute(default="")
     id: UnicodeAttribute = UnicodeAttribute(default="")
+    favorite_foods: ListAttribute = ListAttribute(of=FavoriteFood, default=[])
+    friends: ListAttribute = ListAttribute(of=UnicodeAttribute, default=[])
