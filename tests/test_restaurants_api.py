@@ -53,7 +53,9 @@ def test_get_review_by_restaurant(client: TestClient):
     headers = {}
     response = client.request(
         "GET",
-        "/restaurants/{restaurantId}/reviews".format(restaurantId=56),
+        "/restaurants/{restaurantId}/reviews".format(
+            restaurantId="restaurant_id_example"
+        ),
         headers=headers,
     )
 

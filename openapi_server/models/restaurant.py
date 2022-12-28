@@ -23,7 +23,7 @@ class Restaurant(BaseModel):
         address: The address of this Restaurant.
     """
 
-    id: int = Field(alias="id")
+    id: str = Field(alias="id")
     name: str = Field(alias="name")
     longitude: float = Field(alias="longitude")
     latitude: float = Field(alias="latitude")

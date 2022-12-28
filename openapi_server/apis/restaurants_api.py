@@ -83,7 +83,7 @@ async def get_restaurants(
     response_model_by_alias=True,
 )
 async def get_review_by_restaurant(
-    restaurantId: int = Path(
+    restaurantId: str = Path(
         None,
         description="ID of restaurant to return all reviews for a single restaurant",
     ),

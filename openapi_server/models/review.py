@@ -28,7 +28,7 @@ class Review(BaseModel):
 
     id: int = Field(alias="id")
     user_id: str = Field(alias="userId")
-    restaurant_id: int = Field(alias="restaurantId")
+    restaurant_id: str = Field(alias="restaurantId")
     rating: int = Field(alias="rating")
     content: Optional[str] = Field(alias="content", default=None)
     photo_url: Optional[str] = Field(alias="photoUrl", default=None)
