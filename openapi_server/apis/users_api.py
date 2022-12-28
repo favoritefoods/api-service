@@ -50,8 +50,10 @@ async def create_user(
     try:
         DbUser.get(create_user.username)
         return Response(status_code=409)
-    except Exception as e:
+    except DbUser.DoesNotExist:
         pass
+    except:
+        return Response(status_code=500)
 
     new_user: DbUser = DbUser(create_user.username)
     new_user.update(
@@ -64,7 +66,11 @@ async def create_user(
             DbUser.id.set(uuid.uuid4().hex),  # can use Cognito id in prod
         ]
     )
-    new_user.save()
+    try:
+        new_user.save()
+    except:
+        return Response(status_code=500)
+
     return User(
         id=new_user.id,
         username=new_user.username,
@@ -94,8 +100,10 @@ async def delete_user(
     try:
         DbUser.get(username).delete()
         return Response(status_code=204)
-    except Exception as does_not_exist:
+    except DbUser.DoesNotExist:
         return Response(status_code=404)
+    except:
+        return Response(status_code=500)
 
 
 @router.get(
@@ -176,8 +184,10 @@ async def get_user_by_name(
             email=user.email,
             password=user.password,
         )
-    except Exception as does_not_exist:
+    except DbUser.DoesNotExist:
         return Response(status_code=404)
+    except:
+        return Response(status_code=500)
 
 
 @router.post(
