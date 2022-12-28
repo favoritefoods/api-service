@@ -3,7 +3,7 @@ info:
   title: Flavorite - OpenAPI 3.0
   description: >-
     This is a Flavorite Server based on the OpenAPI 3.0 specification. 
-  version: 1.1.1
+  version: 1.1.2
 servers:
   - url: https://localhost:8080/api/v1
 tags:
@@ -410,6 +410,50 @@ paths:
       summary: Get friends of a user
       description: ''
       operationId: getFriends
+      parameters:
+        - name: username
+          in: path
+          description: Name of user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFriends'
+        '404':
+          description: User not found
+    put:
+      tags:
+        - users
+      summary: Update friends of a user
+      description: ''
+      operationId: updateFriends
+      parameters:
+        - name: username
+          in: path
+          description: Name of user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFriends'
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - users
+      summary: Remove all connections to friends of a user
+      description: ''
+      operationId: deleteFriends
       parameters:
         - name: username
           in: path
