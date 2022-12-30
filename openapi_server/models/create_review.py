@@ -21,13 +21,17 @@ class CreateReview(BaseModel):
         rating: The rating of this CreateReview.
         content: The content of this CreateReview [Optional].
         photo_url: The photo_url of this CreateReview [Optional].
+        favorite_food: The favorite_food of this CreateReview.
+        starred: The starred of this CreateReview.
     """
 
-    user_id: int = Field(alias="userId")
+    user_id: str = Field(alias="userId")
     restaurant_id: int = Field(alias="restaurantId")
     rating: int = Field(alias="rating")
     content: Optional[str] = Field(alias="content", default=None)
     photo_url: Optional[str] = Field(alias="photoUrl", default=None)
+    favorite_food: str = Field(alias="favoriteFood")
+    starred: bool = Field(alias="starred")
 
 
 CreateReview.update_forward_refs()
