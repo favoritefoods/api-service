@@ -17,6 +17,7 @@ from fastapi import (  # noqa: F401
     Response,
     Security,
     status,
+    HTTPException,
 )
 
 from httpx import AsyncClient
@@ -45,7 +46,7 @@ async def get_restaurants(
     longitude: float = Query(None, description="longitude of center"),
     latitude: float = Query(None, description="latitude of center"),
     radius: int = Query(None, description="radius"),
-) -> Union[ListRestaurants, Response]:
+) -> ListRestaurants:
     """Returns all restauarants in given location radius"""
     results: List
     try:
@@ -54,8 +55,8 @@ async def get_restaurants(
                 f"/maps/api/place/nearbysearch/json?location={latitude}%2C{longitude}&radius={radius}&type=restaurant&key={os.environ.get('GOOGLE_API_KEY')}"
             )
             results = response.json()["results"]
-    except:
-        return Response(status_code=500)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
     restaurants: List[Restaurant] = []
     for place in results:
