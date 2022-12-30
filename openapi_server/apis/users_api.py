@@ -16,6 +16,7 @@ from fastapi import (  # noqa: F401
     Response,
     Security,
     status,
+    HTTPException,
 )
 
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
@@ -52,8 +53,8 @@ async def create_user(
         return Response(status_code=409)
     except DbUser.DoesNotExist:
         pass
-    except:
-        return Response(status_code=500)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
     new_user: DbUser = DbUser(create_user.username)
     new_user.update(
@@ -68,8 +69,8 @@ async def create_user(
     )
     try:
         new_user.save()
-    except:
-        return Response(status_code=500)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
     return User(
         id=new_user.id,
@@ -101,9 +102,9 @@ async def delete_user(
         DbUser.get(username).delete()
         return Response(status_code=204)
     except DbUser.DoesNotExist:
-        return Response(status_code=404)
-    except:
-        return Response(status_code=500)
+        raise HTTPException(status_code=404)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get(
@@ -172,7 +173,7 @@ async def get_reviews_by_username(
 )
 async def get_user_by_name(
     username: str = Path(None, description="The name that needs to be fetched"),
-) -> Union[User, Response]:
+) -> User:
     """"""
     try:
         user: DbUser = DbUser.get(username)
@@ -185,9 +186,9 @@ async def get_user_by_name(
             password=user.password,
         )
     except DbUser.DoesNotExist:
-        return Response(status_code=404)
-    except:
-        return Response(status_code=500)
+        raise HTTPException(status_code=404)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post(
