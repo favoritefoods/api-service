@@ -23,49 +23,51 @@ from openapi_server.main import app
                 {
                     "business_status": "OPERATIONAL",
                     "geometry": {
-                        "location": {"lat": 40.7666602, "lng": -73.83243499999999},
+                        "location": {"lat": 40.7546795, "lng": -73.9870291},
                         "viewport": {
                             "northeast": {
-                                "lat": 40.7680213802915,
-                                "lng": -73.83120021970849,
+                                "lat": 40.75601118029149,
+                                "lng": -73.98556926970849,
                             },
                             "southwest": {
-                                "lat": 40.7653234197085,
-                                "lng": -73.8338981802915,
+                                "lat": 40.7533132197085,
+                                "lng": -73.9882672302915,
                             },
                         },
                     },
                     "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
                     "icon_background_color": "#FF9E67",
                     "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
-                    "name": "New 88",
-                    "opening_hours": {"open_now": False},
+                    "name": "Joe's Pizza Broadway",
+                    "opening_hours": {"open_now": True},
                     "photos": [
                         {
-                            "height": 2322,
+                            "height": 9000,
                             "html_attributions": [
-                                '<a href="https://maps.google.com/maps/contrib/113190293207555088222">luis fernandez</a>'
+                                '<a href="https://maps.google.com/maps/contrib/102814344397000225596">Marlene Escobar</a>'
                             ],
-                            "photo_reference": "ARywPAK8rZ-NNzHXIWqTQhKgx7riuRAa_3L54mYnvwdAWvVj19rd56MCsW5uw0Jpr5VZc94yQ_4CpLRv5loP03cfyDZCkkQONkh77D9rwG8eRJvzw_-OeQwXPDkBVWQftOArGiFV-yheX0QtZBMX8z5uVNOyP0urr3IenuG1kbTaKZ7enGJB",
-                            "width": 4128,
+                            "photo_reference": "ARywPAKhaV30O5tIjdrNQU4F9rxRqjbJ_deUxPouP-ieg05kgg_vySCuY2OzkbTBkE-3gftdXk213f2wyjK2RlHXjUiG0kziHarrSfXk6KYD7B9ZIt_MTxrp03V0DgxJbaLhnbeUStBjCgfVxGKzsqEsechd8_YPwUdB-p9S3yrWZzRss3MT",
+                            "width": 12000,
                         }
                     ],
-                    "place_id": "ChIJS1mNV6yKwokRgBOlGbotUIk",
+                    "place_id": "ChIJifIePKtZwokRVZ-UdRGkZzs",
                     "plus_code": {
-                        "compound_code": "Q589+M2 New York, NY, USA",
-                        "global_code": "87G8Q589+M2",
+                        "compound_code": "Q237+V5 New York, NY, USA",
+                        "global_code": "87G8Q237+V5",
                     },
-                    "rating": 4.1,
-                    "reference": "ChIJS1mNV6yKwokRgBOlGbotUIk",
+                    "price_level": 1,
+                    "rating": 4.5,
+                    "reference": "ChIJifIePKtZwokRVZ-UdRGkZzs",
                     "scope": "GOOGLE",
                     "types": [
+                        "meal_delivery",
                         "restaurant",
                         "food",
                         "point_of_interest",
                         "establishment",
                     ],
-                    "user_ratings_total": 8,
-                    "vicinity": "33-05 Farrington Street, Queens",
+                    "user_ratings_total": 13538,
+                    "vicinity": "1435 Broadway, New York",
                 }
             ],
             "status": "OK",
@@ -80,9 +82,9 @@ def test_get_restaurants(client: TestClient):
     client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
 
     params: List[Tuple[str, Union[str, int, float, bool, None]]] = [
-        ("latitude", 40.7675),
-        ("longitude", -73.832764),
-        ("radius", 125),
+        ("latitude", 40.7546795),
+        ("longitude", -73.9870291),
+        ("radius", 25),
     ]
     headers: Dict = {}
     response = client.request(
@@ -96,11 +98,11 @@ def test_get_restaurants(client: TestClient):
     assert response.json() == {
         "restaurants": [
             {
-                "id": "ChIJS1mNV6yKwokRgBOlGbotUIk",
-                "name": "New 88",
-                "latitude": 40.7666602,
-                "longitude": -73.83243499999999,
-                "address": "33-05 Farrington Street, Queens",
+                "id": "ChIJifIePKtZwokRVZ-UdRGkZzs",
+                "name": "Joe's Pizza Broadway",
+                "latitude": 40.7546795,
+                "longitude": -73.9870291,
+                "address": "1435 Broadway, New York",
             }
         ],
     }
