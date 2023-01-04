@@ -525,14 +525,14 @@ components:
         # total: integer
     CreateReview:
       required:
-        - userId
+        - username
         - restaurantId
         - rating
         - favoriteFood
         - starred
       type: object
       properties:
-        userId:
+        username:
           type: string
           example: '198772'
         restaurantId:
