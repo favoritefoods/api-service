@@ -46,8 +46,7 @@ paths:
           description: ID of review to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: successful operation
@@ -71,8 +70,7 @@ paths:
           description: ID of review to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       requestBody:
         $ref: '#/components/requestBodies/UpdateReview'
       responses:
@@ -100,8 +98,7 @@ paths:
           description: Review id to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '204':
           description: Successful operation
@@ -120,8 +117,7 @@ paths:
           description: ID of review to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
         - name: additionalMetadata
           in: query
           description: Additional Metadata
@@ -153,8 +149,7 @@ paths:
           description: ID of review to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '204':
           description: Successful operation
