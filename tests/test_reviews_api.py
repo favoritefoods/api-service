@@ -19,7 +19,7 @@ def test_add_review(client: TestClient):
         "starred": 1,
         "favorite_food": "pizza",
         "rating": 5,
-        "restaurant_id": 19877,
+        "restaurant_id": "19877",
         "user_id": "198772",
         "content": "Awesome",
     }
