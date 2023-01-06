@@ -403,7 +403,7 @@ paths:
       tags:
         - users
       summary: Get friends of a user
-      description: ''
+      description: Returns all friends of a single user
       operationId: getFriends
       parameters:
         - name: username
@@ -425,7 +425,7 @@ paths:
       tags:
         - users
       summary: Update friends of a user
-      description: ''
+      description: Refresh or initialize a user's friends list to match 1-to-1 to their Facebook friends that have accounts, and return the list
       operationId: updateFriends
       parameters:
         - name: username
@@ -447,7 +447,7 @@ paths:
       tags:
         - users
       summary: Remove all connections to friends of a user
-      description: ''
+      description: Unlink the connection of a user's friends list from their FB friends list, and remove all friends from a user's friends list since they are 1-to-1
       operationId: deleteFriends
       parameters:
         - name: username
