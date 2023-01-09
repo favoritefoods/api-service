@@ -57,7 +57,7 @@ async def add_review(
     response_model_by_alias=True,
 )
 async def delete_image(
-    reviewId: int = Path(None, description="ID of review to update"),
+    reviewId: str = Path(None, description="ID of review to update"),
 ) -> None:
     """"""
     ...
@@ -74,7 +74,7 @@ async def delete_image(
     response_model_by_alias=True,
 )
 async def delete_review(
-    reviewId: int = Path(None, description="Review id to delete"),
+    reviewId: str = Path(None, description="Review id to delete"),
 ) -> None:
     """delete a review"""
     ...
@@ -92,7 +92,7 @@ async def delete_review(
     response_model_by_alias=True,
 )
 async def get_review_by_id(
-    reviewId: int = Path(None, description="ID of review to return"),
+    reviewId: str = Path(None, description="ID of review to return"),
 ) -> Review:
     """Returns a single review"""
     ...
@@ -111,7 +111,7 @@ async def get_review_by_id(
     response_model_by_alias=True,
 )
 async def update_reviewby_id(
-    reviewId: int = Path(None, description="ID of review to return"),
+    reviewId: str = Path(None, description="ID of review to return"),
     update_review: UpdateReview = Body(
         None, description="Update an existent review on a restaurant"
     ),
@@ -130,7 +130,7 @@ async def update_reviewby_id(
     response_model_by_alias=True,
 )
 async def upload_image(
-    reviewId: int = Path(None, description="ID of review to update"),
+    reviewId: str = Path(None, description="ID of review to update"),
     additional_metadata: str = Query(None, description="Additional Metadata"),
     body: str = Body(None, description=""),
 ) -> ApiResponse:

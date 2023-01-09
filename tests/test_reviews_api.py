@@ -20,8 +20,8 @@ def test_add_review(client: TestClient):
         "favorite_food": "pizza",
         "rating": 5,
         "restaurant_id": "19877",
-        "user_id": "198772",
         "content": "Awesome",
+        "username": "198772",
     }
 
     headers = {}
@@ -45,7 +45,7 @@ def test_delete_image(client: TestClient):
     headers = {}
     response = client.request(
         "DELETE",
-        "/reviews/{reviewId}/image".format(reviewId=56),
+        "/reviews/{reviewId}/image".format(reviewId="review_id_example"),
         headers=headers,
     )
 
@@ -62,7 +62,7 @@ def test_delete_review(client: TestClient):
     headers = {}
     response = client.request(
         "DELETE",
-        "/reviews/{reviewId}".format(reviewId=56),
+        "/reviews/{reviewId}".format(reviewId="review_id_example"),
         headers=headers,
     )
 
@@ -79,7 +79,7 @@ def test_get_review_by_id(client: TestClient):
     headers = {}
     response = client.request(
         "GET",
-        "/reviews/{reviewId}".format(reviewId=56),
+        "/reviews/{reviewId}".format(reviewId="review_id_example"),
         headers=headers,
     )
 
@@ -103,7 +103,7 @@ def test_update_reviewby_id(client: TestClient):
     headers = {}
     response = client.request(
         "PUT",
-        "/reviews/{reviewId}".format(reviewId=56),
+        "/reviews/{reviewId}".format(reviewId="review_id_example"),
         headers=headers,
         json=update_review,
     )
@@ -122,7 +122,7 @@ def test_upload_image(client: TestClient):
     headers = {}
     response = client.request(
         "POST",
-        "/reviews/{reviewId}/image".format(reviewId=56),
+        "/reviews/{reviewId}/image".format(reviewId="review_id_example"),
         headers=headers,
         json=body,
         params=params,

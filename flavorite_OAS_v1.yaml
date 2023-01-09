@@ -3,7 +3,7 @@ info:
   title: Flavorite - OpenAPI 3.0
   description: >-
     This is a Flavorite Server based on the OpenAPI 3.0 specification. 
-  version: 1.1.1
+  version: 1.1.2
 servers:
   - url: https://localhost:8080/api/v1
 tags:
@@ -46,8 +46,7 @@ paths:
           description: ID of review to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: successful operation
@@ -71,8 +70,7 @@ paths:
           description: ID of review to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       requestBody:
         $ref: '#/components/requestBodies/UpdateReview'
       responses:
@@ -100,8 +98,7 @@ paths:
           description: Review id to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '204':
           description: Successful operation
@@ -120,8 +117,7 @@ paths:
           description: ID of review to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
         - name: additionalMetadata
           in: query
           description: Additional Metadata
@@ -153,8 +149,7 @@ paths:
           description: ID of review to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '204':
           description: Successful operation
@@ -408,8 +403,52 @@ paths:
       tags:
         - users
       summary: Get friends of a user
-      description: ''
+      description: Returns all friends of a single user
       operationId: getFriends
+      parameters:
+        - name: username
+          in: path
+          description: Name of user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFriends'
+        '404':
+          description: User not found
+    put:
+      tags:
+        - users
+      summary: Update friends of a user
+      description: Refresh or initialize a user's friends list to match 1-to-1 to their Facebook friends that have accounts, and return the list
+      operationId: updateFriends
+      parameters:
+        - name: username
+          in: path
+          description: Name of user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFriends'
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - users
+      summary: Remove all connections to friends of a user
+      description: Unlink the connection of a user's friends list from their FB friends list, and remove all friends from a user's friends list since they are 1-to-1
+      operationId: deleteFriends
       parameters:
         - name: username
           in: path
@@ -431,23 +470,22 @@ components:
     Review:
       required:
         - id
-        - userId
-        - restaurantId
+        - user
+        - restaurant
         - rating
         - favoriteFood
         - starred
+        - createdAt
+        - updatedAt
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
-        userId:
           type: string
-          example: '198772'
-        restaurantId:
-          type: string
-          example: '19877'
+          example: '10'
+        user:
+          $ref: '#/components/schemas/User'
+        restaurant:
+          $ref: '#/components/schemas/Restaurant'
         rating:
           type: integer
           format: int64
@@ -464,6 +502,10 @@ components:
         starred:
           type: boolean
           example: true
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
     ListReviews:
       required:
         - reviews
@@ -478,14 +520,14 @@ components:
         # total: integer
     CreateReview:
       required:
-        - userId
+        - username
         - restaurantId
         - rating
         - favoriteFood
         - starred
       type: object
       properties:
-        userId:
+        username:
           type: string
           example: '198772'
         restaurantId:
@@ -689,6 +731,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
+        fbConnected:
+          type: boolean
+          example: true
     ApiResponse:
       type: object
       properties:
