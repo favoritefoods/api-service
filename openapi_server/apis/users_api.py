@@ -19,6 +19,8 @@ from fastapi import (  # noqa: F401
     HTTPException,
 )
 
+from pynamodb.attributes import ListAttribute
+
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.create_user import CreateUser
 from openapi_server.models.list_favorite_foods import ListFavoriteFoods
@@ -28,7 +30,8 @@ from openapi_server.models.login_payload import LoginPayload
 from openapi_server.models.login_user import LoginUser
 from openapi_server.models.update_user import UpdateUser
 from openapi_server.models.user import User
-from openapi_server.orms.user import DbUser
+from openapi_server.models.favorite_food import FavoriteFood
+from openapi_server.orms.user import DbUser, DbFavoriteFood
 
 
 router = APIRouter()
@@ -138,7 +141,18 @@ async def get_favorite_foods(
     username: str = Path(None, description="Name of user"),
 ) -> ListFavoriteFoods:
     """"""
-    ...
+    try:
+        user: DbUser = DbUser.get(username)
+    except DbUser.DoesNotExist:
+        raise HTTPException(status_code=404)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    favorite_foods: List[FavoriteFood] = []
+    for item in user.favorite_foods:
+        food: FavoriteFood = FavoriteFood(id=item.id, name=item.name)
+        favorite_foods.append(food)
+    return ListFavoriteFoods(favoriteFoods=favorite_foods)
 
 
 @router.get(

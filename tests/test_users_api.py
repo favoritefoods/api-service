@@ -1,7 +1,7 @@
 # coding: utf-8
 
-import typing
 import httpx
+from typing import Dict, List, Union, Tuple
 
 from fastapi.testclient import TestClient
 
@@ -29,7 +29,7 @@ def test_create_user(client: TestClient):
     DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
     client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
 
-    create_user: typing.Dict = {
+    create_user: Dict = {
         "firstName": "John",
         "lastName": "James",
         "password": "12345",
@@ -37,7 +37,7 @@ def test_create_user(client: TestClient):
         "username": "theUser",
     }
 
-    headers: typing.Dict = {}
+    headers: Dict = {}
     response: httpx.Response = client.request(
         "POST",
         "users",
@@ -94,7 +94,7 @@ def test_delete_user(client: TestClient):
     client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
     test_create_user(client)  # using above test to create a user w/ username="theUser"
 
-    headers: typing.Dict = {}
+    headers: Dict = {}
     response: httpx.Response = client.request(
         "DELETE",
         "users/{username}".format(username="theUser"),
@@ -111,21 +111,34 @@ def test_delete_user(client: TestClient):
     assert response.status_code == 404
 
 
+@mock_dynamodb
 def test_get_favorite_foods(client: TestClient):
     """Test case for get_favorite_foods
 
     Get favorite foods of a user
     """
 
-    headers = {}
-    response = client.request(
+    DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+    test_create_user(client)
+
+    headers: Dict = {}
+    response: httpx.Response = client.request(
         "GET",
-        "/users/{username}/favorite-foods".format(username="username_example"),
+        "users/{username}/favorite-foods".format(username="theUser"),
         headers=headers,
     )
+    assert response.status_code == 200
+    assert response.json() == {
+        "favoriteFoods": [],
+    }
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    response = client.request(
+        "GET",
+        "users/{username}/favorite-foods".format(username="notTheUser"),
+        headers=headers,
+    )
+    assert response.status_code == 404
 
 
 def test_get_friends(client: TestClient):
@@ -172,7 +185,7 @@ def test_get_user_by_name(client: TestClient):
     client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
     test_create_user(client)  # using above test to create a user w/ username="theUser"
 
-    headers: typing.Dict = {}
+    headers: Dict = {}
     response: httpx.Response = client.request(
         "GET",
         "users/{username}".format(username="theUser"),
