@@ -248,25 +248,45 @@ def test_logout_user(client: TestClient):
     # assert response.status_code == 200
 
 
+@mock_dynamodb
 def test_update_favorite_foods(client: TestClient):
     """Test case for update_favorite_foods
 
     Update favorite foods of a user
     """
-    list_favorite_foods = {
-        "favorite_foods": [{"name": "sushi", "id": 10}, {"name": "sushi", "id": 10}]
+    list_favorite_foods: Dict[str, List[Dict[str, Union[int, str]]]] = {
+        "favoriteFoods": [
+            {"id": 1, "name": "sushi"},
+            {"id": 2, "name": "pizza"},
+        ],
     }
 
-    headers = {}
-    response = client.request(
+    DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+    test_create_user(client)
+
+    headers: Dict = {}
+    response: httpx.Response = client.request(
         "PUT",
-        "/users/{username}/favorite-foods".format(username="username_example"),
+        "users/{username}/favorite-foods".format(username="theUser"),
         headers=headers,
         json=list_favorite_foods,
     )
+    assert response.status_code == 200
+    assert response.json() == {
+        "favoriteFoods": [
+            {"id": 1, "name": "sushi"},
+            {"id": 2, "name": "pizza"},
+        ],
+    }
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    response = client.request(
+        "PUT",
+        "users/{username}/favorite-foods".format(username="notTheUser"),
+        headers=headers,
+        json=list_favorite_foods,
+    )
+    assert response.status_code == 404
 
 
 def test_update_friends(client: TestClient):
