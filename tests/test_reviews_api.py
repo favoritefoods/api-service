@@ -1,10 +1,11 @@
 # coding: utf-8
 
-import httpx
 from typing import Dict
+from httpx import Response
 
 from fastapi.testclient import TestClient
 
+from unittest.mock import patch
 from moto import mock_dynamodb
 
 from openapi_server.models.api_response import ApiResponse  # noqa: F401
@@ -19,6 +20,75 @@ from openapi_server.orms.restaurant import DbRestaurant
 
 
 @mock_dynamodb
+@patch(
+    "httpx.AsyncClient.get",
+    return_value=Response(
+        200,
+        json={
+            "html_attributions": [],
+            "result": {
+                "address_components": [],
+                "business_status": "OPERATIONAL",
+                "current_opening_hours": {},
+                "delivery": True,
+                "dine_in": True,
+                "editorial_summary": {
+                    "language": "en",
+                    "overview": "Modern outpost of a longtime counter-serve pizza joint prepping New York-style slices & pies.",
+                },
+                "formatted_address": "1435 Broadway, New York, NY 10018, USA",
+                "formatted_phone_number": "(646) 559-4878",
+                "geometry": {
+                    "location": {"lat": 40.7546795, "lng": -73.9870291},
+                    "viewport": {
+                        "northeast": {
+                            "lat": 40.75601118029149,
+                            "lng": -73.98556926970849,
+                        },
+                        "southwest": {
+                            "lat": 40.7533132197085,
+                            "lng": -73.9882672302915,
+                        },
+                    },
+                },
+                "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+                "icon_background_color": "#FF9E67",
+                "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+                "international_phone_number": "+1 646-559-4878",
+                "name": "Joe's Pizza Broadway",
+                "opening_hours": {},
+                "photos": [],
+                "place_id": "ChIJifIePKtZwokRVZ-UdRGkZzs",
+                "plus_code": {},
+                "price_level": 1,
+                "rating": 4.5,
+                "reference": "ChIJifIePKtZwokRVZ-UdRGkZzs",
+                "reservable": False,
+                "reviews": [],
+                "secondary_opening_hours": [],
+                "serves_breakfast": False,
+                "serves_brunch": False,
+                "serves_dinner": True,
+                "serves_lunch": True,
+                "takeout": True,
+                "types": [
+                    "meal_delivery",
+                    "restaurant",
+                    "food",
+                    "point_of_interest",
+                    "establishment",
+                ],
+                "url": "https://maps.google.com/?cid=4280570365733019477",
+                "user_ratings_total": 13623,
+                "utc_offset": -300,
+                "vicinity": "1435 Broadway, New York",
+                "website": "http://joespizzanyc.com/",
+                "wheelchair_accessible_entrance": True,
+            },
+            "status": "OK",
+        },
+    ),
+)
 def test_add_review(client: TestClient):
     """Test case for add_review
 
