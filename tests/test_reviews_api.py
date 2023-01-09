@@ -1,39 +1,95 @@
 # coding: utf-8
 
+import httpx
+from typing import Dict
+
 from fastapi.testclient import TestClient
 
+from moto import mock_dynamodb
 
 from openapi_server.models.api_response import ApiResponse  # noqa: F401
 from openapi_server.models.create_review import CreateReview  # noqa: F401
 from openapi_server.models.review import Review  # noqa: F401
 from openapi_server.models.update_review import UpdateReview  # noqa: F401
+from openapi_server.models.user import User
+from openapi_server.main import app
+from openapi_server.orms.review import DbReview
+from openapi_server.orms.user import DbUser
+from openapi_server.orms.restaurant import DbRestaurant
 
 
+@mock_dynamodb
 def test_add_review(client: TestClient):
     """Test case for add_review
 
     Add a new review about a restaurant
     """
+
+    DbReview.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    DbRestaurant.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+
     create_review = {
-        "photo_url": "www.photouploaded.com",
-        "starred": 1,
-        "favorite_food": "pizza",
+        "photoUrl": "www.photouploaded.com",
+        "starred": True,
+        "favoriteFood": "pizza",
         "rating": 5,
-        "restaurant_id": "19877",
+        "restaurantId": "ChIJifIePKtZwokRVZ-UdRGkZzs",
         "content": "Awesome",
-        "username": "198772",
+        "username": "theUser",
     }
+
+    test_user: DbUser = DbUser(create_review["username"])
+    test_user.update(
+        actions=[
+            DbUser.first_name.set("John"),
+            DbUser.last_name.set("James"),
+            DbUser.email.set("john@email.com"),
+            DbUser.password.set("12345"),
+            DbUser.id.set("1"),
+        ]
+    )
+    test_user.save()
+    assert DbUser.get(create_review["username"]).username == create_review["username"]
 
     headers = {}
     response = client.request(
         "POST",
-        "/reviews",
+        "reviews",
         headers=headers,
         json=create_review,
     )
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    review_id = response.json()["id"]
+    review_record: DbReview = DbReview.get(review_id)
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": review_id,
+        "user": {
+            "id": test_user.id,
+            "username": test_user.username,
+            "firstName": test_user.first_name,
+            "lastName": test_user.last_name,
+            "email": test_user.email,
+            "password": test_user.password,
+        },
+        "restaurant": {
+            "id": create_review["restaurantId"],
+            "name": "Joe's Pizza Broadway",
+            "latitude": 40.7546795,
+            "longitude": -73.9870291,
+            "address": "1435 Broadway, New York, NY 10018, USA",
+        },
+        "rating": create_review["rating"],
+        "content": create_review["content"],
+        "photoUrl": create_review["photoUrl"],
+        "favoriteFood": create_review["favoriteFood"],
+        "starred": create_review["starred"],
+        "createdAt": review_record.created_at,
+        "updatedAt": review_record.updated_at,
+    }
 
 
 def test_delete_image(client: TestClient):
