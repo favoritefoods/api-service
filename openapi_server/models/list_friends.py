@@ -18,9 +18,11 @@ class ListFriends(BaseModel):
     ListFriends - a model defined in OpenAPI
 
         friends: The friends of this ListFriends.
+        fb_connected: The fb_connected of this ListFriends [Optional].
     """
 
     friends: List[User] = Field(alias="friends")
+    fb_connected: Optional[bool] = Field(alias="fbConnected", default=None)
 
 
 ListFriends.update_forward_refs()

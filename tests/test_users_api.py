@@ -66,6 +66,23 @@ def test_create_user(client: TestClient):
     assert response.status_code == 409
 
 
+def test_delete_friends(client: TestClient):
+    """Test case for delete_friends
+
+    Remove all connections to friends of a user
+    """
+
+    headers = {}
+    response = client.request(
+        "DELETE",
+        "/users/{username}/friends".format(username="username_example"),
+        headers=headers,
+    )
+
+    # uncomment below to assert the status code of the HTTP response
+    # assert response.status_code == 200
+
+
 @mock_dynamodb
 def test_delete_user(client: TestClient):
     """Test case for delete_user
@@ -233,6 +250,23 @@ def test_update_favorite_foods(client: TestClient):
         "/users/{username}/favorite-foods".format(username="username_example"),
         headers=headers,
         json=list_favorite_foods,
+    )
+
+    # uncomment below to assert the status code of the HTTP response
+    # assert response.status_code == 200
+
+
+def test_update_friends(client: TestClient):
+    """Test case for update_friends
+
+    Update friends of a user
+    """
+
+    headers = {}
+    response = client.request(
+        "PUT",
+        "/users/{username}/friends".format(username="username_example"),
+        headers=headers,
     )
 
     # uncomment below to assert the status code of the HTTP response

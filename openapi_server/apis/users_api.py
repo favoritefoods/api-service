@@ -82,6 +82,23 @@ async def create_user(
 
 
 @router.delete(
+    "/users/{username}/friends",
+    responses={
+        200: {"model": ListFriends, "description": "successful operation"},
+        404: {"description": "User not found"},
+    },
+    tags=["users"],
+    summary="Remove all connections to friends of a user",
+    response_model_by_alias=True,
+)
+async def delete_friends(
+    username: str = Path(None, description="Name of user"),
+) -> ListFriends:
+    """Unlink the connection of a user&#39;s friends list from their FB friends list, and remove all friends from a user&#39;s friends list since they are 1-to-1"""
+    ...
+
+
+@router.delete(
     "/users/{username}",
     responses={
         204: {"description": "Successful operation"},
@@ -136,7 +153,7 @@ async def get_favorite_foods(
 async def get_friends(
     username: str = Path(None, description="Name of user"),
 ) -> ListFriends:
-    """"""
+    """Returns all friends of a single user"""
     ...
 
 
@@ -238,6 +255,23 @@ async def update_favorite_foods(
     ),
 ) -> ListFavoriteFoods:
     """This can only be done by the logged in user."""
+    ...
+
+
+@router.put(
+    "/users/{username}/friends",
+    responses={
+        200: {"model": ListFriends, "description": "successful operation"},
+        404: {"description": "User not found"},
+    },
+    tags=["users"],
+    summary="Update friends of a user",
+    response_model_by_alias=True,
+)
+async def update_friends(
+    username: str = Path(None, description="Name of user"),
+) -> ListFriends:
+    """Refresh or initialize a user&#39;s friends list to match 1-to-1 to their Facebook friends that have accounts, and return the list"""
     ...
 
 

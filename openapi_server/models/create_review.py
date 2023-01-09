@@ -16,7 +16,7 @@ class CreateReview(BaseModel):
 
     CreateReview - a model defined in OpenAPI
 
-        user_id: The user_id of this CreateReview.
+        username: The username of this CreateReview.
         restaurant_id: The restaurant_id of this CreateReview.
         rating: The rating of this CreateReview.
         content: The content of this CreateReview [Optional].
@@ -25,7 +25,7 @@ class CreateReview(BaseModel):
         starred: The starred of this CreateReview.
     """
 
-    user_id: str = Field(alias="userId")
+    username: str = Field(alias="username")
     restaurant_id: str = Field(alias="restaurantId")
     rating: int = Field(alias="rating")
     content: Optional[str] = Field(alias="content", default=None)
