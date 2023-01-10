@@ -100,7 +100,7 @@ def test_add_review(client: TestClient):
     DbRestaurant.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
     client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
 
-    create_review = {
+    create_review: Dict = {
         "photoUrl": "www.photouploaded.com",
         "starred": True,
         "favoriteFood": "pizza",
@@ -123,15 +123,15 @@ def test_add_review(client: TestClient):
     test_user.save()
     assert DbUser.get(create_review["username"]).username == create_review["username"]
 
-    headers = {}
-    response = client.request(
+    headers: Dict = {}
+    response: Response = client.request(
         "POST",
         "reviews",
         headers=headers,
         json=create_review,
     )
 
-    review_id = response.json()["id"]
+    review_id: str = response.json()["id"]
     review_record: DbReview = DbReview.get(review_id)
 
     assert response.status_code == 200

@@ -21,6 +21,8 @@ from fastapi import (  # noqa: F401
     HTTPException,
 )
 
+from pynamodb.expressions.update import Action
+
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.api_response import ApiResponse
 from openapi_server.models.create_review import CreateReview
@@ -68,7 +70,7 @@ async def add_review(
                 response = await ac.get(
                     f"/maps/api/place/details/json?place_id={create_review.restaurant_id}&key={os.environ.get('GOOGLE_API_KEY')}"
                 )
-                result = response.json()["result"]
+                result: Dict = response.json()["result"]
 
             restaurant = DbRestaurant(result["place_id"])
             restaurant.update(
@@ -96,7 +98,7 @@ async def add_review(
             DbReview.starred.set(create_review.starred),
         ]
     )
-    actions = [DbReview.updated_at.set(new_review.created_at)]
+    actions: List[Action] = [DbReview.updated_at.set(new_review.created_at)]
     # optional request body properties
     if create_review.content:
         actions.append(DbReview.content.set(create_review.content))
