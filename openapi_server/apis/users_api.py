@@ -57,16 +57,14 @@ async def create_user(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    new_user: DbUser = DbUser(create_user.username)
-    new_user.update(
-        actions=[
-            DbUser.first_name.set(create_user.first_name),
-            DbUser.last_name.set(create_user.last_name),
-            DbUser.email.set(create_user.email),
-            # should let Cognito handle pw storage and access in prod
-            DbUser.password.set(create_user.password),
-            DbUser.id.set(uuid.uuid4().hex),  # can use Cognito id in prod
-        ]
+    new_user: DbUser = DbUser(
+        create_user.username,
+        first_name=create_user.first_name,
+        last_name=create_user.last_name,
+        email=create_user.email,
+        # should let Cognito handle pw storage and access in prod
+        password=create_user.password,
+        id=uuid.uuid4().hex,  # can use Cognito id in prod
     )
     try:
         new_user.save()
