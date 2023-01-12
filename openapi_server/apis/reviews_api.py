@@ -72,14 +72,12 @@ async def add_review(
                 )
                 result: Dict = response.json()["result"]
 
-            restaurant = DbRestaurant(result["place_id"])
-            restaurant.update(
-                actions=[
-                    DbRestaurant.name.set(result["name"]),
-                    DbRestaurant.latitude.set(result["geometry"]["location"]["lat"]),
-                    DbRestaurant.longitude.set(result["geometry"]["location"]["lng"]),
-                    DbRestaurant.address.set(result["formatted_address"]),
-                ]
+            restaurant = DbRestaurant(
+                result["place_id"],
+                name=result["name"],
+                latitude=result["geometry"]["location"]["lat"],
+                longitude=result["geometry"]["location"]["lng"],
+                address=result["formatted_address"],
             )
             restaurant.save()
         except Exception as e:
@@ -87,25 +85,21 @@ async def add_review(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    new_review: DbReview = DbReview(uuid4().hex)
-    new_review.update(
-        actions=[
-            DbReview.created_at.set(str(datetime.utcnow())),
-            DbReview.username.set(create_review.username),
-            DbReview.restaurantId.set(create_review.restaurant_id),
-            DbReview.rating.set(create_review.rating),
-            DbReview.favorite_food.set(create_review.favorite_food),
-            DbReview.starred.set(create_review.starred),
-        ]
+    new_review: DbReview = DbReview(
+        uuid4().hex,
+        created_at=str(datetime.utcnow()),
+        username=create_review.username,
+        restaurantId=create_review.restaurant_id,
+        rating=create_review.rating,
+        favorite_food=create_review.favorite_food,
+        starred=create_review.starred,
     )
-    actions: List[Action] = [DbReview.updated_at.set(new_review.created_at)]
+    new_review.updated_at = new_review.created_at
     # optional request body properties
     if create_review.content:
-        actions.append(DbReview.content.set(create_review.content))
+        new_review.content = create_review.content
     if create_review.photo_url:
-        actions.append(DbReview.photo_url.set(create_review.photo_url))
-
-    new_review.update(actions)
+        new_review.photo_url = create_review.photo_url
     try:
         new_review.save()
     except Exception as e:
