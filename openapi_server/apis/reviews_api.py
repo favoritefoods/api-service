@@ -110,8 +110,8 @@ async def add_review(
         user=User(
             id=user.id,
             username=user.username,
-            firstName=user.first_name,
-            lastName=user.last_name,
+            first_name=user.first_name,
+            last_name=user.last_name,
             email=user.email,
             password=user.password,
         ),
@@ -124,11 +124,11 @@ async def add_review(
         ),
         rating=new_review.rating,
         content=new_review.content,
-        photoUrl=new_review.photo_url,
-        favoriteFood=new_review.favorite_food,
+        photo_url=new_review.photo_url,
+        favorite_food=new_review.favorite_food,
         starred=new_review.starred,
-        createdAt=new_review.created_at,
-        updatedAt=new_review.updated_at,
+        created_at=new_review.created_at,
+        updated_at=new_review.updated_at,
     )
 
 
