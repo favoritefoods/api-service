@@ -306,26 +306,51 @@ def test_update_friends(client: TestClient):
     # assert response.status_code == 200
 
 
+@mock_dynamodb
 def test_update_user(client: TestClient):
     """Test case for update_user
 
     Update user
     """
-    update_user = {
-        "first_name": "John",
-        "last_name": "James",
+
+    DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+    test_create_user(client)  # using above test to create a user w/ username="theUser"
+
+    # only updating username
+    update_user: Dict[str, str] = {
+        "firstName": "John",
+        "lastName": "James",
         "password": "12345",
         "email": "john@email.com",
-        "username": "theUser",
+        "username": "newUser",
     }
 
-    headers = {}
-    response = client.request(
+    headers: Dict = {}
+    response: httpx.Response = client.request(
         "PUT",
-        "/users/{username}".format(username="username_example"),
+        "users/{username}".format(username="theUser"),
         headers=headers,
         json=update_user,
     )
+    assert response.status_code == 200
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    # creating another user w/ username="theUser" now that it's available
+    test_user: DbUser = DbUser(
+        "theUser",
+        first_name="John",
+        last_name="James",
+        email="john@email.com",
+        password="12345",
+        id="1",
+    )
+    test_user.save()
+    assert DbUser.get(test_user.username).username == test_user.username
+    response = client.request(
+        "PUT",
+        "users/{username}".format(username="theUser"),
+        headers=headers,
+        json=update_user,
+    )
+    # username "newUser" should be unavailable
+    assert response.status_code == 409

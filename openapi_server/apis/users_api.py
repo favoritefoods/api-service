@@ -2,7 +2,7 @@
 
 import uuid
 
-from typing import Dict, List, Union  # noqa: F401
+from typing import Dict, List, Union, Optional  # noqa: F401
 
 from fastapi import (  # noqa: F401
     APIRouter,
@@ -320,6 +320,39 @@ async def update_user(
     update_user: UpdateUser = Body(
         None, description="Update an existent user in the store"
     ),
-) -> None:
+) -> Optional[Response]:
     """This can only be done by the logged in user."""
-    ...
+    try:
+        user: DbUser = DbUser.get(username)
+    except DbUser.DoesNotExist:
+        raise HTTPException(status_code=404)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    old_user_item: Union[DbUser, None]
+    if update_user.username and update_user.username != user.username:
+        try:
+            DbUser.get(update_user.username)
+            return Response(status_code=409)
+        except DbUser.DoesNotExist:
+            old_user_item = DbUser.get(user.username)
+            user.username = update_user.username
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+    else:
+        old_user_item = None
+    if update_user.first_name:
+        user.first_name = update_user.first_name
+    if update_user.last_name:
+        user.last_name = update_user.last_name
+    if update_user.email:
+        user.email = update_user.email
+    if update_user.password:
+        user.password = update_user.password
+    try:
+        user.save()
+        if old_user_item:
+            old_user_item.delete()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    return None
