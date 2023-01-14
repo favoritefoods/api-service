@@ -1,9 +1,9 @@
 # coding: utf-8
 
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 
-class TokenModel(BaseModel):
+class TokenModel(CamelModel):
     """Defines a token model."""
 
     sub: str
