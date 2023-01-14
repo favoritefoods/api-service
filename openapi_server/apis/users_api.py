@@ -144,10 +144,9 @@ async def get_favorite_foods(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    favorite_foods: List[FavoriteFood] = []
-    for item in user.favorite_foods:
-        food: FavoriteFood = FavoriteFood(id=item.id, name=item.name)
-        favorite_foods.append(food)
+    favorite_foods: List[FavoriteFood] = list(
+        map(lambda food: FavoriteFood(id=food.id, name=food.name), user.favorite_foods)
+    )
     return ListFavoriteFoods(favoriteFoods=favorite_foods)
 
 
@@ -273,13 +272,17 @@ async def update_favorite_foods(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    fav_foods: List[DbFavoriteFood] = []  # to be saved in the database
-    favorite_foods: List[FavoriteFood] = []  # to be returned in the response
-    for item in list_favorite_foods.favorite_foods:
-        db_food: DbFavoriteFood = DbFavoriteFood(id=item.id, name=item.name)
-        fav_foods.append(db_food)
-        food: FavoriteFood = FavoriteFood(id=item.id, name=item.name)
-        favorite_foods.append(food)
+    # to be saved in the database
+    fav_foods: List[DbFavoriteFood] = list(
+        map(
+            lambda db_food: DbFavoriteFood(id=db_food.id, name=db_food.name),
+            list_favorite_foods.favorite_foods,
+        )
+    )
+    # to be returned in the response
+    favorite_foods: List[FavoriteFood] = list(
+        map(lambda food: FavoriteFood(id=food.id, name=food.name), fav_foods)
+    )
     user.favorite_foods = fav_foods
     try:
         user.save()
