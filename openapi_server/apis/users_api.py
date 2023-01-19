@@ -272,24 +272,18 @@ async def update_favorite_foods(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    # to be saved in the database
-    fav_foods: List[DbFavoriteFood] = list(
+    user.favorite_foods = list(
         map(
-            lambda db_food: DbFavoriteFood(id=db_food.id, name=db_food.name),
+            lambda food: DbFavoriteFood(id=food.id, name=food.name),
             list_favorite_foods.favorite_foods,
         )
     )
-    # to be returned in the response
-    favorite_foods: List[FavoriteFood] = list(
-        map(lambda food: FavoriteFood(id=food.id, name=food.name), fav_foods)
-    )
-    user.favorite_foods = fav_foods
     try:
         user.save()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    return ListFavoriteFoods(favoriteFoods=favorite_foods)
+    return list_favorite_foods
 
 
 @router.put(
