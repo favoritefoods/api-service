@@ -17,7 +17,7 @@ class DbReview(Model):
     created_at: UnicodeAttribute = UnicodeAttribute(default="")
     updated_at: UnicodeAttribute = UnicodeAttribute(default="")
     username: UnicodeAttribute = UnicodeAttribute(default="")
-    restaurantId: UnicodeAttribute = UnicodeAttribute(default="")
+    restaurant_id: UnicodeAttribute = UnicodeAttribute(default="")
     rating: NumberAttribute = NumberAttribute(default=0)
     favorite_food: UnicodeAttribute = UnicodeAttribute(default="")
     starred: BooleanAttribute = BooleanAttribute(default=False)

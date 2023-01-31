@@ -89,7 +89,7 @@ async def add_review(
         uuid4().hex,
         created_at=str(datetime.utcnow()),
         username=create_review.username,
-        restaurantId=create_review.restaurant_id,
+        restaurant_id=create_review.restaurant_id,
         rating=create_review.rating,
         favorite_food=create_review.favorite_food,
         starred=create_review.starred,
