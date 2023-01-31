@@ -9,7 +9,7 @@ from pynamodb.attributes import (
 )
 
 
-class FavoriteFood(MapAttribute):
+class DbFavoriteFood(MapAttribute):
     id: NumberAttribute = NumberAttribute(default=0)
     name: UnicodeAttribute = UnicodeAttribute(default="")
 
@@ -25,5 +25,5 @@ class DbUser(Model):
     email: UnicodeAttribute = UnicodeAttribute(default="")
     password: UnicodeAttribute = UnicodeAttribute(default="")
     id: UnicodeAttribute = UnicodeAttribute(default="")
-    favorite_foods: ListAttribute = ListAttribute(of=FavoriteFood, default=[])
+    favorite_foods: ListAttribute = ListAttribute(of=DbFavoriteFood, default=[])
     friends: ListAttribute = ListAttribute(of=UnicodeAttribute, default=[])
