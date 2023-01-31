@@ -74,8 +74,8 @@ async def create_user(
     return User(
         id=new_user.id,
         username=new_user.username,
-        firstName=new_user.first_name,
-        lastName=new_user.last_name,
+        first_name=new_user.first_name,
+        last_name=new_user.last_name,
         email=new_user.email,
         password=new_user.password,
     )
@@ -147,7 +147,7 @@ async def get_favorite_foods(
     favorite_foods: List[FavoriteFood] = list(
         map(lambda food: FavoriteFood(id=food.id, name=food.name), user.favorite_foods)
     )
-    return ListFavoriteFoods(favoriteFoods=favorite_foods)
+    return ListFavoriteFoods(favorite_foods=favorite_foods)
 
 
 @router.get(
@@ -206,8 +206,8 @@ async def get_user_by_name(
         return User(
             id=user.id,
             username=user.username,
-            firstName=user.first_name,
-            lastName=user.last_name,
+            first_name=user.first_name,
+            last_name=user.last_name,
             email=user.email,
             password=user.password,
         )
