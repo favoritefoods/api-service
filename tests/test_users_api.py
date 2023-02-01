@@ -17,6 +17,8 @@ from openapi_server.models.update_user import UpdateUser  # noqa: F401
 from openapi_server.models.user import User  # noqa: F401
 from openapi_server.main import app
 from openapi_server.orms.user import DbUser
+from openapi_server.orms.review import DbReview
+from openapi_server.orms.restaurant import DbRestaurant
 
 
 @mock_dynamodb
@@ -158,21 +160,107 @@ def test_get_friends(client: TestClient):
     # assert response.status_code == 200
 
 
+@mock_dynamodb
 def test_get_reviews_by_username(client: TestClient):
     """Test case for get_reviews_by_username
 
     Get reviews by user name
     """
 
-    headers = {}
-    response = client.request(
+    DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    DbReview.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    DbRestaurant.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+
+    # test items
+    test_user: DbUser = DbUser(
+        username="theUser",
+        first_name="John",
+        last_name="James",
+        email="john@email.com",
+        password="12345",
+        id="1",
+    )
+    test_user.save()
+    assert DbUser.get("theUser").username == "theUser"
+    test_restaurant: DbRestaurant = DbRestaurant(
+        id="0",
+        name="Joe's Pizza",
+        latitude=40.7546795,
+        longitude=-73.9870291,
+        address="NYC",
+    )
+    test_restaurant.save()
+    assert DbRestaurant.get("0").name == "Joe's Pizza"
+
+    headers: Dict = {}
+    response: httpx.Response = client.request(
         "GET",
-        "/users/{username}/reviews".format(username="username_example"),
+        "users/{username}/reviews".format(username="theUser"),
         headers=headers,
     )
+    assert response.status_code == 200
+    assert response.json() == {
+        "reviews": [],
+    }
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    # adding a test review item for theUser
+    test_review: DbReview = DbReview(
+        id="0",
+        created_at="2023",
+        updated_at="2023",
+        username="theUser",
+        restaurant_id="0",
+        rating=5,
+        favorite_food="pizza",
+        starred=True,
+        content="Awesome",
+        photo_url="www.photouploaded.com",
+    )
+    test_review.save()
+    assert DbReview.get("0").username == "theUser"
+    response = client.request(
+        "GET",
+        "users/{username}/reviews".format(username="theUser"),
+        headers=headers,
+    )
+    assert response.status_code == 200
+    assert response.json() == {
+        "reviews": [
+            {
+                "content": test_review.content,
+                "createdAt": test_review.created_at,
+                "favoriteFood": test_review.favorite_food,
+                "id": test_review.id,
+                "photoUrl": test_review.photo_url,
+                "rating": test_review.rating,
+                "restaurant": {
+                    "address": test_restaurant.address,
+                    "id": test_restaurant.id,
+                    "latitude": test_restaurant.latitude,
+                    "longitude": test_restaurant.longitude,
+                    "name": test_restaurant.name,
+                },
+                "starred": test_review.starred,
+                "updatedAt": test_review.updated_at,
+                "user": {
+                    "email": test_user.email,
+                    "firstName": test_user.first_name,
+                    "id": test_user.id,
+                    "lastName": test_user.last_name,
+                    "password": test_user.password,
+                    "username": test_user.username,
+                },
+            }
+        ],
+    }
+
+    response = client.request(
+        "GET",
+        "users/{username}/reviews".format(username="notTheUser"),
+        headers=headers,
+    )
+    assert response.status_code == 404
 
 
 @mock_dynamodb

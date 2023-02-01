@@ -19,6 +19,8 @@ from fastapi import (  # noqa: F401
     HTTPException,
 )
 
+from pynamodb.exceptions import QueryError
+
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.create_user import CreateUser
 from openapi_server.models.list_favorite_foods import ListFavoriteFoods
@@ -29,7 +31,11 @@ from openapi_server.models.login_user import LoginUser
 from openapi_server.models.update_user import UpdateUser
 from openapi_server.models.user import User
 from openapi_server.models.favorite_food import FavoriteFood
+from openapi_server.models.review import Review
+from openapi_server.models.restaurant import Restaurant
 from openapi_server.orms.user import DbUser, DbFavoriteFood
+from openapi_server.orms.review import DbReview
+from openapi_server.orms.restaurant import DbRestaurant
 
 
 router = APIRouter()
@@ -183,7 +189,49 @@ async def get_reviews_by_username(
     ),
 ) -> ListReviews:
     """Returns all reviews by a single user"""
-    ...
+    try:
+        user: DbUser = DbUser.get(username)
+    except DbUser.DoesNotExist:
+        raise HTTPException(status_code=404)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    reviews: List[Review] = []
+    try:
+        for review in DbReview.username_index.query(username):
+            restaurant: DbRestaurant = DbRestaurant.get(review.restaurant_id)
+            reviews.append(
+                Review(
+                    id=review.id,
+                    user=User(
+                        id=user.id,
+                        username=user.username,
+                        first_name=user.first_name,
+                        last_name=user.last_name,
+                        email=user.email,
+                        password=user.password,
+                    ),
+                    restaurant=Restaurant(
+                        id=restaurant.id,
+                        name=restaurant.name,
+                        latitude=restaurant.latitude,
+                        longitude=restaurant.longitude,
+                        address=restaurant.address,
+                    ),
+                    rating=review.rating,
+                    content=review.content,
+                    photo_url=review.photo_url,
+                    favorite_food=review.favorite_food,
+                    starred=review.starred,
+                    created_at=review.created_at,
+                    updated_at=review.updated_at,
+                )
+            )
+    except QueryError:
+        pass
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    return ListReviews(reviews=reviews)
 
 
 @router.get(
