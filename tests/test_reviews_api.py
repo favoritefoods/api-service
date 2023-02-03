@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from typing import Dict
+from typing import Dict, Tuple
 from httpx import Response
 
 from fastapi.testclient import TestClient
@@ -17,6 +17,49 @@ from openapi_server.main import app
 from openapi_server.orms.review import DbReview
 from openapi_server.orms.user import DbUser
 from openapi_server.orms.restaurant import DbRestaurant
+
+
+def initTestItems() -> Tuple[DbUser, DbRestaurant, DbReview]:
+    DbUser.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    test_user: DbUser = DbUser(
+        username="theUser",
+        first_name="John",
+        last_name="James",
+        email="john@email.com",
+        password="12345",
+        id="1",
+    )
+    test_user.save()
+    assert DbUser.get("theUser").username == "theUser"
+
+    DbRestaurant.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    test_restaurant: DbRestaurant = DbRestaurant(
+        id="0",
+        name="Joe's Pizza",
+        latitude=40.7546795,
+        longitude=-73.9870291,
+        address="NYC",
+    )
+    test_restaurant.save()
+    assert DbRestaurant.get("0").name == "Joe's Pizza"
+
+    DbReview.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    test_review: DbReview = DbReview(
+        id="0",
+        created_at="2023",
+        updated_at="2023",
+        username="theUser",
+        restaurant_id="0",
+        rating=5,
+        favorite_food="pizza",
+        starred=True,
+        content="Awesome",
+        photo_url="www.photouploaded.com",
+    )
+    test_review.save()
+    assert DbReview.get("0").username == "theUser"
+
+    return (test_user, test_restaurant, test_review)
 
 
 @mock_dynamodb
@@ -179,21 +222,31 @@ def test_delete_image(client: TestClient):
     # assert response.status_code == 200
 
 
+@mock_dynamodb
 def test_delete_review(client: TestClient):
     """Test case for delete_review
 
     Deletes a review
     """
 
-    headers = {}
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+    (test_user, test_restaurant, test_review) = initTestItems()
+
+    headers: Dict = {}
     response = client.request(
         "DELETE",
-        "/reviews/{reviewId}".format(reviewId="review_id_example"),
+        "reviews/{reviewId}".format(reviewId=test_review.id),
         headers=headers,
     )
+    assert response.status_code == 204
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    # trying to delete already deleted record
+    response = client.request(
+        "DELETE",
+        "reviews/{reviewId}".format(reviewId=test_review.id),
+        headers=headers,
+    )
+    assert response.status_code == 404
 
 
 def test_get_review_by_id(client: TestClient):

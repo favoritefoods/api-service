@@ -162,9 +162,15 @@ async def delete_image(
 )
 async def delete_review(
     reviewId: str = Path(None, description="Review id to delete"),
-) -> None:
+) -> Response:
     """delete a review"""
-    ...
+    try:
+        DbReview.get(reviewId).delete()
+        return Response(status_code=204)
+    except DbReview.DoesNotExist:
+        raise HTTPException(status_code=404)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get(
