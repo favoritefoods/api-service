@@ -301,29 +301,65 @@ def test_get_review_by_id(client: TestClient):
     assert response.status_code == 404
 
 
+@mock_dynamodb
 def test_update_reviewby_id(client: TestClient):
     """Test case for update_reviewby_id
 
     Update an existing review
     """
-    update_review = {
-        "photo_url": "www.photouploaded.com",
-        "starred": 1,
-        "favorite_food": "pizza",
-        "rating": 5,
-        "content": "Awesome",
+
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+    (test_user, test_restaurant, test_review) = initTestItems()
+
+    update_review: Dict = {
+        "photo_url": "www.photouploaded.com/updated",
+        "starred": False,
+        "favorite_food": "cheese pizza",
+        "rating": 4,
+        "content": "Awesome!",
     }
 
-    headers = {}
-    response = client.request(
+    headers: Dict = {}
+    response: Response = client.request(
         "PUT",
-        "/reviews/{reviewId}".format(reviewId="review_id_example"),
+        "reviews/{reviewId}".format(reviewId=test_review.id),
         headers=headers,
         json=update_review,
     )
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": test_review.id,
+        "user": {
+            "id": test_user.id,
+            "username": test_user.username,
+            "firstName": test_user.first_name,
+            "lastName": test_user.last_name,
+            "email": test_user.email,
+            "password": test_user.password,
+        },
+        "restaurant": {
+            "id": test_restaurant.id,
+            "name": test_restaurant.name,
+            "latitude": test_restaurant.latitude,
+            "longitude": test_restaurant.longitude,
+            "address": test_restaurant.address,
+        },
+        "rating": update_review["rating"],
+        "content": update_review["content"],
+        "photoUrl": update_review["photo_url"],
+        "favoriteFood": update_review["favorite_food"],
+        "starred": update_review["starred"],
+        "createdAt": test_review.created_at,
+        "updatedAt": DbReview.get(test_review.id).updated_at,
+    }
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    # updating a review that doesn't exist
+    response = client.request(
+        "GET",
+        "reviews/{reviewId}".format(reviewId="404"),
+        headers=headers,
+    )
+    assert response.status_code == 404
 
 
 def test_upload_image(client: TestClient):

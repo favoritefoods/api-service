@@ -258,7 +258,71 @@ async def update_reviewby_id(
     ),
 ) -> Review:
     """Update an existing review by Id"""
-    ...
+    try:
+        # review info
+        review: DbReview = DbReview.get(reviewId)
+
+        if update_review.rating:
+            review.rating = update_review.rating
+        if update_review.content:
+            review.content = update_review.content
+        if update_review.photo_url:
+            review.photo_url = update_review.photo_url
+        if update_review.favorite_food:
+            review.favorite_food = update_review.favorite_food
+        if update_review.starred is not None:
+            review.starred = update_review.starred
+        review.updated_at = str(datetime.utcnow())
+        try:
+            review.save()
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+        # user info
+        try:
+            user: DbUser = DbUser.get(review.username)
+        except DbUser.DoesNotExist:
+            raise HTTPException(status_code=404, detail="User not found")
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+        # restaurant info
+        try:
+            restaurant: DbRestaurant = DbRestaurant.get(review.restaurant_id)
+        except DbRestaurant.DoesNotExist:
+            raise HTTPException(status_code=404, detail="Restaurant not found")
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+        return Review(
+            id=review.id,
+            user=User(
+                id=user.id,
+                username=user.username,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                email=user.email,
+                password=user.password,
+            ),
+            restaurant=Restaurant(
+                id=restaurant.id,
+                name=restaurant.name,
+                latitude=restaurant.latitude,
+                longitude=restaurant.longitude,
+                address=restaurant.address,
+            ),
+            rating=review.rating,
+            content=review.content,
+            photo_url=review.photo_url,
+            favorite_food=review.favorite_food,
+            starred=review.starred,
+            created_at=review.created_at,
+            updated_at=review.updated_at,
+        )
+    except DbReview.DoesNotExist:
+        raise HTTPException(status_code=404)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post(
