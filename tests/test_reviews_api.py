@@ -233,7 +233,7 @@ def test_delete_review(client: TestClient):
     (test_user, test_restaurant, test_review) = initTestItems()
 
     headers: Dict = {}
-    response = client.request(
+    response: Response = client.request(
         "DELETE",
         "reviews/{reviewId}".format(reviewId=test_review.id),
         headers=headers,
@@ -249,21 +249,56 @@ def test_delete_review(client: TestClient):
     assert response.status_code == 404
 
 
+@mock_dynamodb
 def test_get_review_by_id(client: TestClient):
     """Test case for get_review_by_id
 
     Find review by ID
     """
 
-    headers = {}
-    response = client.request(
+    client = TestClient(app, base_url="http://0.0.0.0:8080/api/v1/")
+    (test_user, test_restaurant, test_review) = initTestItems()
+
+    headers: Dict = {}
+    response: Response = client.request(
         "GET",
-        "/reviews/{reviewId}".format(reviewId="review_id_example"),
+        "reviews/{reviewId}".format(reviewId=test_review.id),
         headers=headers,
     )
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": test_review.id,
+        "user": {
+            "id": test_user.id,
+            "username": test_user.username,
+            "firstName": test_user.first_name,
+            "lastName": test_user.last_name,
+            "email": test_user.email,
+            "password": test_user.password,
+        },
+        "restaurant": {
+            "id": test_restaurant.id,
+            "name": test_restaurant.name,
+            "latitude": test_restaurant.latitude,
+            "longitude": test_restaurant.longitude,
+            "address": test_restaurant.address,
+        },
+        "rating": test_review.rating,
+        "content": test_review.content,
+        "photoUrl": test_review.photo_url,
+        "favoriteFood": test_review.favorite_food,
+        "starred": test_review.starred,
+        "createdAt": test_review.created_at,
+        "updatedAt": test_review.updated_at,
+    }
 
-    # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    # searching for review that doesn't exist
+    response = client.request(
+        "GET",
+        "reviews/{reviewId}".format(reviewId="404"),
+        headers=headers,
+    )
+    assert response.status_code == 404
 
 
 def test_update_reviewby_id(client: TestClient):

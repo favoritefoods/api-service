@@ -188,7 +188,55 @@ async def get_review_by_id(
     reviewId: str = Path(None, description="ID of review to return"),
 ) -> Review:
     """Returns a single review"""
-    ...
+    try:
+        # review info
+        review: DbReview = DbReview.get(reviewId)
+
+        # user info
+        try:
+            user: DbUser = DbUser.get(review.username)
+        except DbUser.DoesNotExist:
+            raise HTTPException(status_code=404, detail="User not found")
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+        # restaurant info
+        try:
+            restaurant: DbRestaurant = DbRestaurant.get(review.restaurant_id)
+        except DbRestaurant.DoesNotExist:
+            raise HTTPException(status_code=404, detail="Restaurant not found")
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+        return Review(
+            id=review.id,
+            user=User(
+                id=user.id,
+                username=user.username,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                email=user.email,
+                password=user.password,
+            ),
+            restaurant=Restaurant(
+                id=restaurant.id,
+                name=restaurant.name,
+                latitude=restaurant.latitude,
+                longitude=restaurant.longitude,
+                address=restaurant.address,
+            ),
+            rating=review.rating,
+            content=review.content,
+            photo_url=review.photo_url,
+            favorite_food=review.favorite_food,
+            starred=review.starred,
+            created_at=review.created_at,
+            updated_at=review.updated_at,
+        )
+    except DbReview.DoesNotExist:
+        raise HTTPException(status_code=404)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.put(
